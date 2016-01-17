@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<%! int cont = 1; %>
+	<%! int cont; %>
 	<p>
 	<%
 		List<String> nomes = new ArrayList<String>();
@@ -21,12 +21,18 @@
 		nomes.add("Daniel");
 	
 		for (String nome : nomes) {
+			String bgcolor = null;
 			if (nome.startsWith("D")) {
 				if (cont % 2 == 0) {
-					out.println("<div style='background-color:none'>" + nome + "</div>");
+					bgcolor = "none";
 				} else {
-					out.println("<div style='background-color:green'>" + nome + "</div>");
+					bgcolor = "green";
 				}
+				
+	%>
+		<div style='background-color: <%= bgcolor %>'> <%= nome %></div><br/>
+		Valor do cont: <%= cont %>
+	<%
 				cont++;
 			}
 		}
