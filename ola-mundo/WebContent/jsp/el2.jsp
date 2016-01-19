@@ -4,17 +4,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Expression Language</title>
+<title>EL 2</title>
 </head>
 <body>
-	
-	<form action="el2.jsp" method="post">
-		Nome: <input name="nome"/> <br/>
-		Endereço: <input name="endereco"/> <br/>
-		Versão: <input name="versao"/> <br/>
-	
-		<input type="submit" value="Enviar"/>
-	</form>
-	
+
+	Nome é: ${param['nome']} <br/>
+	Endereço é: ${param['endereco']} <br/>
+	Version é: ${param['versao']} <br/>
+
 </body>
 </html>
