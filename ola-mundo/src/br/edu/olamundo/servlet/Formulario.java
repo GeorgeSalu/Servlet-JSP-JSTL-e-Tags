@@ -3,6 +3,7 @@ package br.edu.olamundo.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,18 +19,8 @@ public class Formulario extends HttpServlet{
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String nome = request.getParameter("nome");
-		String endereco = request.getParameter("endereco");
-		String cpf = request.getParameter("cpf");
-		String nascimentos = request.getParameter("nasc");
-		
-		PrintWriter writer = response.getWriter();
-		writer.println(" nome "+nome);
-		writer.println(" endereco "+endereco);
-		writer.println(" cpf "+cpf);
-		writer.println(" nascimento "+nascimentos);
-		writer.flush();
-	
+		RequestDispatcher dispatcher = request.getRequestDispatcher("jsp/servlet-resultado.jsp");
+		dispatcher.forward(request	, response);
 	}
 	
 	
