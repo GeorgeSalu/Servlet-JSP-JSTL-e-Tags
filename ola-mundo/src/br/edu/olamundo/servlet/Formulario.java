@@ -2,6 +2,9 @@ package br.edu.olamundo.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,41 +21,46 @@ public class Formulario extends HttpServlet{
 
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		request.setAttribute("data", dateFormat.format(new Date()));
 		
-		String redirect = "jsp/servlet-examplo.jsp";
+		String redirect = "servlet-example.jsp";
 		if (validarCamposObg(request, response)) {
-			redirect = "jsp/servlet-resultado.jsp";
+			redirect = "servlet-resultado.jsp";
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(redirect);
 		dispatcher.forward(request, response);
 	}
 	
-	
 	private boolean validarCamposObg(HttpServletRequest request, HttpServletResponse response) {
 		boolean retorno = true;
-		String msgErro = null;
+		String msgErro = "";
 		String nome = request.getParameter("nome");
 		String endereco = request.getParameter("endereco");
 		String cpf = request.getParameter("cpf");
 		String nasc = request.getParameter("nasc");
 		
-		if (nome == null) {
+		if (nome == null || "".equals(nome)) {
 			retorno = false;
-			msgErro = "Campo Nome obrigatório!";
-		} else if (endereco == null) {
+			msgErro += "Campo Nome obrigatório!<br/>";
+		}
+		if (endereco == null || "".equals(endereco)) {
 			retorno = false;
-			msgErro = "Campo Endereço obrigatório!";
-		} else if (cpf == null) {
+			msgErro += "Campo Endereço obrigatório!<br/>";
+		}
+		if (cpf == null || "".equals(cpf)) {
 			retorno = false;
-			msgErro = "Campo CPF obrigatório!";
-		} else if (nasc == null) {
+			msgErro += "Campo CPF obrigatório!<br/>";
+		}
+		if (nasc == null || "".equals(nasc)) {
 			retorno = false;
-			msgErro = "Campo Dt. Nasc obrigatório!";
+			msgErro += "Campo Dt. Nasc obrigatório!<br/>";
 		}
 		request.setAttribute("msgErro", msgErro);
 		return retorno;
 	}
+
 
 
 	
