@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.edu.alomundo.exception.ValidationException;
+import br.edu.alomundo.validator.DataValidator;
+import br.edu.alomundo.validator.Validator;
+
 @WebServlet("/formulario")
 public class Formulario extends HttpServlet{
 
@@ -24,9 +28,17 @@ public class Formulario extends HttpServlet{
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		request.setAttribute("data", dateFormat.format(new Date()));
 		
+		Validator dataValidator = new DataValidator();
+		String nasc = request.getParameter("nasc");
+		
 		String redirect = "servlet-example.jsp";
-		if (validarCamposObg(request, response)) {
-			redirect = "servlet-resultado.jsp";
+		try {
+			if (validarCamposObg(request, response) && dataValidator.validar(nasc)) {
+				redirect = "servlet-resultado.jsp";
+			}
+		} catch (ValidationException e) {
+			e.printStackTrace();
+			request.setAttribute("msgErro", e.getMessage());
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(redirect);
@@ -60,8 +72,5 @@ public class Formulario extends HttpServlet{
 		request.setAttribute("msgErro", msgErro);
 		return retorno;
 	}
-
-
-
 	
 }
