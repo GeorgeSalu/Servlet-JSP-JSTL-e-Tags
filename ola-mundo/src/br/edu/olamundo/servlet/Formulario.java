@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,15 +32,26 @@ public class Formulario extends HttpServlet{
 		
 		Validator dataValidator = new DataValidator();
 		String nasc = request.getParameter("nasc");
+		String exped = request.getParameter("exped");
+		
+		Map<String, Object> valores = new HashMap<>();
+		valores.put("Dt. Nasc", nasc);
+		valores.put("Dt. Expedição", exped);
 		
 		String redirect = "servlet-example.jsp";
 		try {
-			if (validarCamposObg(request, response) && dataValidator.validar(nasc)) {
+			if (validarCamposObg(request, response) 
+					& dataValidator.validar(valores)) {
 				redirect = "servlet-resultado.jsp";
 			}
 		} catch (ValidationException e) {
 			e.printStackTrace();
-			request.setAttribute("msgErro", e.getMessage());
+			String msgErro = "";
+			if (request.getAttribute("msgErro") != null) {
+				msgErro = (String) request.getAttribute("msgErro");
+			}
+			msgErro += e.getMessage() + "<br/>" ;
+			request.setAttribute("msgErro", msgErro);
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(redirect);
@@ -52,6 +65,7 @@ public class Formulario extends HttpServlet{
 		String endereco = request.getParameter("endereco");
 		String cpf = request.getParameter("cpf");
 		String nasc = request.getParameter("nasc");
+		String exped = request.getParameter("exped");
 		
 		if (nome == null || "".equals(nome)) {
 			retorno = false;
@@ -69,8 +83,11 @@ public class Formulario extends HttpServlet{
 			retorno = false;
 			msgErro += "Campo Dt. Nasc obrigatório!<br/>";
 		}
+		if (exped == null || "".equals(exped)) {
+			retorno = false;
+			msgErro += "Campo Dt. Expedição obrigatório!<br/>";
+		}
 		request.setAttribute("msgErro", msgErro);
 		return retorno;
-	}
-	
+	}	
 }
