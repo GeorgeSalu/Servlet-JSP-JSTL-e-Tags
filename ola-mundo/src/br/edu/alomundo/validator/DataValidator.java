@@ -13,10 +13,18 @@ public class DataValidator implements Validator {
 		String msgErro = "";
 		for (String key : valores.keySet()) {
 			String data = (String) valores.get(key);
-			try {
-				new SimpleDateFormat("dd/MM/yyyy").parse(data);
-			} catch (ParseException e) {
-				msgErro += MensagemContantes.MSG_ERR_CAMPO_INVALIDO.replace("?", key).concat("<br/>");
+			if (!"".equals(data)) {
+				try {
+					if (data.length() < 10) {
+						msgErro += MensagemContantes.MSG_ERR_CAMPO_DATA_MENOR_RECOMENDADO.replace("?", key).concat("<br/>");
+					}
+					if (data.length() > 11) {				
+						msgErro += MensagemContantes.MSG_ERR_CAMPO_DATA_MAIOR_RECOMENDADO.replace("?", key).concat("<br/>");
+					}
+					new SimpleDateFormat("dd/MM/yyyy").parse(data);
+				} catch (ParseException e) {
+					msgErro += MensagemContantes.MSG_ERR_CAMPO_INVALIDO.replace("?", key).concat("<br/>");
+				}
 			}
 		}
 		if (!"".equals(msgErro)) {

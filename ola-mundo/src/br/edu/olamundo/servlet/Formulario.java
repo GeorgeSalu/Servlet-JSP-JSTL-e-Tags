@@ -33,8 +33,7 @@ public class Formulario extends HttpServlet{
 
 		String redirect = "servlet-example.jsp";
 		if (validarCamposObg(request, response) 
-				& validarData(request, response)
-				& validarCPF(request, response)) {
+				& validarData(request) & validarCPF(request)) {
 			redirect = "servlet-resultado.jsp";
 		}
 
@@ -42,7 +41,7 @@ public class Formulario extends HttpServlet{
 		dispatcher.forward(request, response);
 	}
 
-	private boolean validarData(HttpServletRequest request, HttpServletResponse response) {
+	private boolean validarData(HttpServletRequest request) {
 		boolean retorno = false;
 		try {
 			Validator dataValidator = new DataValidator();
@@ -57,12 +56,12 @@ public class Formulario extends HttpServlet{
 				retorno = true;
 			}
 		} catch (ValidationException e) {
-			request.setAttribute("msgErro", Util.concatenaMensagensRequest(request, e));
+			request.setAttribute("msgErro", Util.concatenaMensagensRequest(request, e, "msgErro"));
 		}
 		return retorno;
 	}
 
-	private boolean validarCPF(HttpServletRequest request, HttpServletResponse response) {
+	private boolean validarCPF(HttpServletRequest request) {
 		boolean retorno = false;
 		try {
 			String cpf = request.getParameter("cpf");
@@ -73,7 +72,7 @@ public class Formulario extends HttpServlet{
 				retorno = true;
 			}
 		} catch (ValidationException e) {
-			request.setAttribute("msgErro", Util.concatenaMensagensRequest(request, e));
+			request.setAttribute("msgErro", Util.concatenaMensagensRequest(request, e, "msgErro"));
 		}
 		return retorno;
 	}
