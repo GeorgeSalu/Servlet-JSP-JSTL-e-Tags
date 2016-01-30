@@ -1,21 +1,19 @@
 package br.edu.alomundo.validator;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import br.edu.alomundo.comum.MensagemContantes;
 import br.edu.alomundo.exception.ValidationException;
 
-public class DataValidator implements Validator {
+public class CPFValidator implements Validator {
 
+	@Override
 	public boolean validar(Map<String, Object> valores) throws ValidationException {
 		String msgErro = "";
 		for (String key : valores.keySet()) {
-			String data = (String) valores.get(key);
-			try {
-				new SimpleDateFormat("dd/MM/yyyy").parse(data);
-			} catch (ParseException e) {
+			String cpf = (String) valores.get(key);
+			
+			if (cpf.length() != 11) {
 				msgErro += MensagemContantes.MSG_ERR_CAMPO_INVALIDO.replace("?", key).concat("<br/>");
 			}
 		}
@@ -25,5 +23,5 @@ public class DataValidator implements Validator {
 		
 		return true;
 	}
-	
+
 }

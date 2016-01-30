@@ -1,7 +1,6 @@
 package br.edu.olamundo.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.edu.alomundo.exception.ValidationException;
+import br.edu.alomundo.util.Util;
+import br.edu.alomundo.validator.CPFValidator;
 import br.edu.alomundo.validator.DataValidator;
 import br.edu.alomundo.validator.Validator;
 
@@ -29,35 +30,54 @@ public class Formulario extends HttpServlet{
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		request.setAttribute("data", dateFormat.format(new Date()));
-		
-		Validator dataValidator = new DataValidator();
-		String nasc = request.getParameter("nasc");
-		String exped = request.getParameter("exped");
-		
-		Map<String, Object> valores = new HashMap<>();
-		valores.put("Dt. Nasc", nasc);
-		valores.put("Dt. Expedição", exped);
-		
+
 		String redirect = "servlet-example.jsp";
-		try {
-			if (validarCamposObg(request, response) 
-					& dataValidator.validar(valores)) {
-				redirect = "servlet-resultado.jsp";
-			}
-		} catch (ValidationException e) {
-			e.printStackTrace();
-			String msgErro = "";
-			if (request.getAttribute("msgErro") != null) {
-				msgErro = (String) request.getAttribute("msgErro");
-			}
-			msgErro += e.getMessage() + "<br/>" ;
-			request.setAttribute("msgErro", msgErro);
+		if (validarCamposObg(request, response) 
+				& validarData(request, response)
+				& validarCPF(request, response)) {
+			redirect = "servlet-resultado.jsp";
 		}
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher(redirect);
 		dispatcher.forward(request, response);
 	}
-	
+
+	private boolean validarData(HttpServletRequest request, HttpServletResponse response) {
+		boolean retorno = false;
+		try {
+			Validator dataValidator = new DataValidator();
+			String nasc = request.getParameter("nasc");
+			String exped = request.getParameter("exped");
+
+			Map<String, Object> valoresData = new HashMap<>();
+			valoresData.put("Dt. Nasc", nasc);
+			valoresData.put("Dt. Expedição", exped);
+
+			if (dataValidator.validar(valoresData)) {
+				retorno = true;
+			}
+		} catch (ValidationException e) {
+			request.setAttribute("msgErro", Util.concatenaMensagensRequest(request, e));
+		}
+		return retorno;
+	}
+
+	private boolean validarCPF(HttpServletRequest request, HttpServletResponse response) {
+		boolean retorno = false;
+		try {
+			String cpf = request.getParameter("cpf");
+
+			Map<String, Object> valoresCPF = new HashMap<>();
+			valoresCPF.put("CPF", cpf);
+			if (new CPFValidator().validar(valoresCPF)) {
+				retorno = true;
+			}
+		} catch (ValidationException e) {
+			request.setAttribute("msgErro", Util.concatenaMensagensRequest(request, e));
+		}
+		return retorno;
+	}
+
 	private boolean validarCamposObg(HttpServletRequest request, HttpServletResponse response) {
 		boolean retorno = true;
 		String msgErro = "";
@@ -66,7 +86,7 @@ public class Formulario extends HttpServlet{
 		String cpf = request.getParameter("cpf");
 		String nasc = request.getParameter("nasc");
 		String exped = request.getParameter("exped");
-		
+
 		if (nome == null || "".equals(nome)) {
 			retorno = false;
 			msgErro += "Campo Nome obrigatório!<br/>";
@@ -89,5 +109,6 @@ public class Formulario extends HttpServlet{
 		}
 		request.setAttribute("msgErro", msgErro);
 		return retorno;
-	}	
+	}
+
 }
