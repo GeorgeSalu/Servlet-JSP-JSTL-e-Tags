@@ -19,6 +19,7 @@ import br.edu.alomundo.util.Util;
 import br.edu.alomundo.validator.CPFValidator;
 import br.edu.alomundo.validator.DataValidator;
 import br.edu.alomundo.validator.Validator;
+import br.edu.olamundo.converte.CPFConverter;
 
 @WebServlet("/formulario")
 public class Formulario extends HttpServlet{
@@ -34,7 +35,9 @@ public class Formulario extends HttpServlet{
 		String redirect = "servlet-example.jsp";
 		if (validarCamposObg(request, response) 
 				& validarData(request) & validarCPF(request)) {
+			CPFConverter cpfConverter = new CPFConverter();
 			redirect = "servlet-resultado.jsp";
+			request.setAttribute("cpf", cpfConverter.converter(request.getParameter("cpf")));
 		}
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher(redirect);

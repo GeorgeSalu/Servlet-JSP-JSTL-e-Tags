@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<form action="formulario" method="post">
+	<form action="wizard" method="post">
 		${msgErro != null ? msgErro : ''}
 		<table width="300" cellpadding="10" align="center">
 			<tr>
@@ -21,7 +21,8 @@
 			</tr>
 			<tr>
 				<td>CPF:</td>
-				<td><input type="text" name="cpf" value="${param.cpf}"/></td>
+				<td><input type="text" name="cpf" value="${param.cpf}"
+					maxlength="11"/></td>
 			</tr>
 			<tr>
 				<td>Data Nasc:</td>
