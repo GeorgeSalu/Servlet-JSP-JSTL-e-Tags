@@ -13,17 +13,24 @@
 			<legend>Login do Sistema</legend>
 		
 			<div class="campo">
-				<label for="login"></label>
+				<div class="label">
+					<label for="login">Login</label>
+				</div>
 				<input type="text" id="login" name="login" maxlength="15"/>
 			</div>
 			
 			<div class="campo">
-				<label for="senha"></label>
+				<div class="label">
+					<label for="senha">Senha</label>
+				</div>
 				<input type="password" id="senha" name="senha" maxlength="15"/>
 			</div>
 			
 			<div class="campo">
 				<input type="submit" value="Logar"/>
+			</div>
+			<div class="campo">
+				<a href="">Esqueci a Senha</a>
 			</div>
 		</fieldset>
 	</form>
