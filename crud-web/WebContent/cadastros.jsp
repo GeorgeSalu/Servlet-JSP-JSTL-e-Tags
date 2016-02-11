@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Home</title>
+<title>Cadastros</title>
 <link rel="stylesheet" href="css/global.css"/>
 </head>
 <body>
@@ -13,10 +13,8 @@
 	
 	<div class="main">
 		<fieldset>
-			<legend>CRUD DevMedia</legend> 
-			<h1>Olá, seja bem vindo ao CRUD - DevMedia</h1>
-			
-			<h4>Esse é um sistema CRUD de cadastros, consultas e operações básicas em torno dos nossos clientes.</h4>
+			<legend>Cadastros</legend> 
+			<h1>Cadastros</h1>
 		</fieldset>
 	</div>
 	
