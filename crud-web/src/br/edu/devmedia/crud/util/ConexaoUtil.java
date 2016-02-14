@@ -13,8 +13,14 @@ import java.util.ResourceBundle;
 public class ConexaoUtil {
 
 
+	private static ResourceBundle configDB = ResourceBundle.getBundle(Constantes.CONEXAO_BD_PROPERTIES);
+
 	public static Connection getConexao() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/crud_devmedia","root","root"); 
+		Class.forName(configDB.getString(Constantes.CONEXAO_BD_DRIVER));
+		return DriverManager.getConnection(configDB.getString(Constantes.CONEXAO_BD_URL), 
+				configDB.getString(Constantes.CONEXAO_BD_USER),
+				configDB.getString(Constantes.CONEXAO_BD_PASSWORD));
 	}
+	
+	
 }
