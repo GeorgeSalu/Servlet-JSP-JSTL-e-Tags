@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * DTO para dados de usuários
  * 
- * @author Devmedia
+ * @author George
  * 
  */
 public class UsuarioDTO implements Serializable {
