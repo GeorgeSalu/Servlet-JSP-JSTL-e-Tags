@@ -26,17 +26,19 @@ public class MainSevlet extends HttpServlet {
 			proxima = "logout.jsp";
 		} else if ("login".equals(acao)) {
 			try {
-				new UsuarioBO().validarUsuario(request);
+				proxima = "index.jsp";
+				if (!new UsuarioBO().validarUsuario(request)) {
+					request.setAttribute("msgErro", "Usuário/Senha inválidos!");
+					proxima = "login.jsp";
+				}
 			} catch (NegocioException e) {
 				request.setAttribute("msgErro", e.getMessage());
 				proxima = "login.jsp";
 			}
-			proxima = "index.jsp";
 		} else if ("consultas".equals(acao)) {
 			proxima = "consultas.jsp";
 		}
 		request.getRequestDispatcher(proxima).forward(request, response);
 	}
-
 	
 }

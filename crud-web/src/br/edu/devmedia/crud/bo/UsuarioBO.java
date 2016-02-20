@@ -25,7 +25,7 @@ public class UsuarioBO {
 	public boolean validarUsuario(HttpServletRequest request) throws NegocioException {
 		boolean isValido = true;
 		try {
-			String usuario = request.getParameter("usuario");
+			String usuario = request.getParameter("login");
 			String senha = request.getParameter("senha");
 
 			UsuarioDTO usuarioDTO = new UsuarioDTO();
@@ -34,7 +34,7 @@ public class UsuarioBO {
 
 			UsuarioDAO usuarioDAO = new UsuarioDAO();
 			isValido = usuarioDAO.validarUsuario(usuarioDTO);
-		} catch (PersistenciaException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new NegocioException(e);
 		}
