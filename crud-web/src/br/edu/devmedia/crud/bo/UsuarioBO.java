@@ -27,29 +27,19 @@ public class UsuarioBO {
 	 * @return
 	 * @throws NegocioException 
 	 */
-	public boolean validarUsuario(HttpServletRequest request) throws NegocioException {
+	public boolean validarUsuario(UsuarioDTO usuarioDTO) throws NegocioException {
 		boolean isValido = true;
 		try {
-			String usuario = request.getParameter("login");
-			String senha = request.getParameter("senha");
-
-			UsuarioDTO usuarioDTO = new UsuarioDTO();
-			usuarioDTO.setUsuario(usuario);
-			usuarioDTO.setSenha(senha);
-
 			// Valida campos obg
 			Map<String, Object> valores = new HashMap<>();
-			valores.put("Usuário", usuario);
-			valores.put("Senha", senha);
+			valores.put("Usuário", usuarioDTO.getUsuario());
+			valores.put("Senha", usuarioDTO.getSenha());
 			if (new LoginValidator().validar(valores)) {
 				isValido = true;
 			}
 			
 			UsuarioDAO usuarioDAO = new UsuarioDAO();
 			isValido = usuarioDAO.validarUsuario(usuarioDTO);
-		} catch (ValidationException e) {
-			request.setAttribute("msgErro", Util.concatenaMensagensRequest(request, e, "msgErro"));
-			isValido = false;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new NegocioException(e);

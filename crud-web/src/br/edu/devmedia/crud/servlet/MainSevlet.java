@@ -33,9 +33,8 @@ public class MainSevlet extends HttpServlet {
 		try {
 			Command comando = verificarComand(acao);
 			proxima = comando.execute(request);
-		} catch (NegocioException e) {
+		} catch (Exception e) {
 			request.setAttribute("msgErro", e.getMessage());
-			proxima = "login.jsp";
 		}
 		request.getRequestDispatcher(proxima).forward(request, response);
 	}
@@ -49,4 +48,5 @@ public class MainSevlet extends HttpServlet {
 		}
 		return comando;
 	}
+
 }

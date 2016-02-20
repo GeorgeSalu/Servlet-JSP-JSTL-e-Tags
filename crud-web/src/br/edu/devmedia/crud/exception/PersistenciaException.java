@@ -3,7 +3,7 @@ package br.edu.devmedia.crud.exception;
 /**
  * Classe responsável por encapsular todas as exceções de banco de dados
  * 
- * @author Devmedia
+ * @author George
  * 
  */
 public class PersistenciaException extends Exception {

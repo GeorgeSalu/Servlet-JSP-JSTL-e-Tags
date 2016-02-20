@@ -7,7 +7,7 @@ import br.edu.devmedia.crud.exception.NegocioException;
 /**
  * Interface para o padrão Command
  * 
- * @author Devmedia
+ * @author George
  * 
  */
 public interface Command {
@@ -19,5 +19,6 @@ public interface Command {
 	 * @return
 	 * @throws NegocioException
 	 */
-	public String execute(HttpServletRequest request) throws NegocioException;
+	public String execute(HttpServletRequest request);
+
 }

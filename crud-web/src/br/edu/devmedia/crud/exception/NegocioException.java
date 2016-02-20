@@ -3,7 +3,7 @@ package br.edu.devmedia.crud.exception;
 /**
  * Classe responsável por gerenciar as exceções da camada de negócio
  * 
- * @author Devmedia
+ * @author George	
  * 
  */
 public class NegocioException extends Exception {
@@ -13,5 +13,10 @@ public class NegocioException extends Exception {
 	public NegocioException(Exception e) {
 		super(e);
 	}
+	
+	public NegocioException(String msg) {
+		super(msg);
+	}
+
 
 }

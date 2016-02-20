@@ -22,4 +22,5 @@ public interface Validator {
 	 */
 	public boolean validar(Map<String, Object> valores) throws ValidationException;
 
+
 }
