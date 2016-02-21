@@ -6,8 +6,8 @@ import br.edu.devmedia.crud.bo.UsuarioBO;
 import br.edu.devmedia.crud.dto.UsuarioDTO;
 import br.edu.devmedia.crud.exception.NegocioException;
 
-public class LoginCommand implements Command {
-
+public class CadastroCommand implements Command {
+	
 	private UsuarioBO usuarioBO;
 
 	private String proximo;
@@ -35,6 +35,5 @@ public class LoginCommand implements Command {
 		request.getSession().setAttribute("usuario", usuarioDTO);
 		return proximo;
 	}
-
 	
 }
