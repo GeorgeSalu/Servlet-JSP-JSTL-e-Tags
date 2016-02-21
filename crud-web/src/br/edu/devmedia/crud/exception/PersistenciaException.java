@@ -15,7 +15,7 @@ public class PersistenciaException extends Exception {
 	}
 
 	public PersistenciaException(Exception e) {
-		super(e.getMessage());
+		super(e);
 	}
 
 	public PersistenciaException(String erro, Exception e) {

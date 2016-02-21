@@ -32,7 +32,6 @@ public class LoginCommand implements Command {
 			e.printStackTrace();
 			request.setAttribute("msgErro", e.getMessage());
 		}
-		request.getSession().setAttribute("usuario", usuarioDTO);
 		return proximo;
 	}
 

@@ -5,10 +5,6 @@ body,input {
 	font-size: 12pt;
 }
 
-a {
-	color: black;
-}
-
 input[type=text],input[type=password] {
 	width: 200px;
 }
@@ -45,7 +41,6 @@ fieldset#fieldset_login {
 
 .main {
 	min-height: 500px;
-	clear: both;
 }
 
 /* Estilo do cabeçalho e rodapé */
@@ -56,16 +51,11 @@ fieldset#fieldset_login {
 
 .cabecalho {
 	border-bottom: 1px dotted gray;
-	min-height: 60px;
+	min-height: 60px;	
 }
 
 .cabecalho a {
 	text-decoration: none;
-}
-
-.cabecalho a.selected {
-	font-weight: bold;
-	color: gray;
 }
 
 .cabecalho a:hover {
@@ -81,8 +71,8 @@ fieldset#fieldset_login {
 	padding: 10px;
 }
 
-.cabecalho ul,.cabecalho ol {
-	float: right;
+.cabecalho ul, .cabecalho ol {
+	float : right;
 	list-style: none;
 	padding-right: 10px;
 }
@@ -91,18 +81,5 @@ fieldset#fieldset_login {
 	float: left;
 	margin: 0px 4px;
 	padding-right: 5px;
-	border-right: 1px solid gray;
-}
-
-.boasVindas {
-	float: right;
-	clear: both;
-}
-/* Fim do estilo do cabeçalho e rodapé */
-.erroDiv {
-	min-height: 25px;
-	border: 2px solid red;
-	width: auto;
-	padding: 10px;
-	font-weight: bold;
+	border-right: 1px solid gray; 
 }

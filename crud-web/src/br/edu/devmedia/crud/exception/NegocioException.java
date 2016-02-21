@@ -11,7 +11,7 @@ public class NegocioException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public NegocioException(Exception e) {
-		super(e.getMessage());
+		super(e);
 	}
 	
 	public NegocioException(String msg) {

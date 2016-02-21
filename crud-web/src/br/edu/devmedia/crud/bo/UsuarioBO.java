@@ -3,10 +3,13 @@ package br.edu.devmedia.crud.bo;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import br.edu.devmedia.crud.dao.UsuarioDAO;
 import br.edu.devmedia.crud.dto.UsuarioDTO;
 import br.edu.devmedia.crud.exception.NegocioException;
-import br.edu.devmedia.crud.util.MensagemContantes;
+import br.edu.devmedia.crud.exception.ValidationException;
+import br.edu.devmedia.crud.util.Util;
 import br.edu.devmedia.crud.validator.LoginValidator;
 
 /**
@@ -37,9 +40,6 @@ public class UsuarioBO {
 			
 			UsuarioDAO usuarioDAO = new UsuarioDAO();
 			isValido = usuarioDAO.validarUsuario(usuarioDTO);
-			if (!isValido) {
-				throw new NegocioException(MensagemContantes.MSG_ERR_USUARIO_SENHA_INVALIDOS);
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new NegocioException(e);
