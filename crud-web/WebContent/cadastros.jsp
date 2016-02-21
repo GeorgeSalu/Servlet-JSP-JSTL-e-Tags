@@ -10,13 +10,81 @@
 <body>
 
 	<jsp:include page="cabecalho.jsp"/>
+		<h1>Cadastros</h1>
 	
-	<div class="main">
-		<fieldset>
-			<legend>Cadastros</legend> 
-			<h1>Cadastros</h1>
-		</fieldset>
-	</div>
+		<div class="main">
+			<form action="">
+				<fieldset>
+					<legend>Cadastro de Pessoa</legend>
+					 
+					<table cellpadding="5">
+						<tr>
+							<td>Nome:</td>
+							<td><input type="text" name="nome" /></td>
+						</tr>
+						<tr>
+							<td>Endereço:</td>
+							<td><input type="text" name="endereco" /></td>
+						</tr>
+						<tr>
+							<td>CPF:</td>
+							<td><input type="text" name="cpf" /></td>
+						</tr>
+						<tr>
+							<td>Data Nascimento:</td>
+							<td><input type="text" name="dtNasc" /></td>
+						</tr>
+						<tr>
+							<td>Sexo:</td>
+							<td><input type="radio" name="sexo" value="M" checked="checked"/> Masculino
+							<input type="radio" name="sexo" value="F" /> Feminino</td>
+						</tr>
+						<tr>
+							<td>Preferências:</td>
+							<td>
+								<input type="checkbox" name="gostos" value="jazz" /> Jazz
+								<input type="checkbox" name="gostos" value="blues" /> Blues
+								<input type="checkbox" name="gostos" value="mpb" /> MPB
+								<input type="checkbox" name="gostos" value="pop" /> Pop
+								<input type="checkbox" name="gostos" value="rock" /> Rock
+							</td>
+						</tr>
+						<tr>
+							<td>Mini-biografia:</td>
+							<td>
+								<textarea rows="5" cols="35" name="miniBio"></textarea>
+							</td>
+						</tr>
+					</table>
+					
+					<fieldset>
+						<legend>Endereço</legend>
+						
+						<table cellpadding="5">
+							<tr>
+								<td>UF:</td>
+								<td>
+									<select name="uf"></select>
+								</td>
+							</tr>
+							<tr>
+								<td>Cidade:</td>
+								<td>
+									<select name="cidade"></select>
+								</td>
+							</tr>
+							<tr>
+								<td>Logradouro:</td>
+								<td>
+									<input type="text" name="logradouro"/>
+								</td>
+							</tr>
+						</table>
+					</fieldset>
+				</fieldset>
+				<input type="submit" value="Cadastrar"/>
+			</form>
+		</div>
 	
 	<jsp:include page="rodape.jsp"/>
 
