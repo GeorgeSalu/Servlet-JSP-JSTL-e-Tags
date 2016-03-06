@@ -8,6 +8,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cadastros</title>
 <link rel="stylesheet" href="css/global.css"/>
+<script type="text/javascript">
+	function popularComboCidades(comboEstados) {
+		var idEstado;
+		location.href = 'main?acao=cadastros&getCidades=true&idEstado=' + idEstado;
+	}
+</script>
 </head>
 <body>
 
@@ -66,9 +72,9 @@
 							<tr>
 								<td>UF:</td>
 								<td>
-									<select name="uf">
+									<select name="uf" onchange="">
 									<%
-										List<UfDTO> listaUF = (List<UfDTO>) request.getAttribute("listaUF");
+										List<UfDTO> listaUF = (List<UfDTO>) session.getAttribute("listaUF");
 										for (UfDTO uf : listaUF) {
 									%>
 										<option value="<%=uf.getIdUF()%>"><%=uf.getDescricao()%></option>
