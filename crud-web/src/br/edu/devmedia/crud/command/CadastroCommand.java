@@ -7,21 +7,28 @@ import br.edu.devmedia.crud.exception.PersistenciaException;
 
 public class CadastroCommand implements Command {
 	
-	private String proximo;
+private String proximo;
 	
 	private CadastroDAO cadastroDAO;
 	
 	public String execute(HttpServletRequest request) {
 		cadastroDAO = new CadastroDAO();
 		proximo = "cadastros.jsp";
+		String getCidades = request.getParameter("getCidades");
 		
 		try {
-			request.setAttribute("listaUF", cadastroDAO.listarUFs());
+			if (getCidades != null && !"".equals(getCidades)) {
+				String id = request.getParameter("idEstado");
+				int idEstado = Integer.parseInt(id);
+				
+			} else {
+				request.getSession().setAttribute("listaUF", cadastroDAO.listarUFs());
+			}
 		} catch (PersistenciaException e) {
 			request.setAttribute("msgErro", e.getMessage());
 		}
 		
 		return proximo;
 	}
-	
+		
 }
