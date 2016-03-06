@@ -1,4 +1,5 @@
 <%@page import="br.edu.devmedia.crud.dto.UfDTO"%>
+<%@page import="br.edu.devmedia.crud.dto.CidadeDTO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -9,13 +10,17 @@
 <title>Cadastros</title>
 <link rel="stylesheet" href="css/global.css"/>
 <script type="text/javascript">
+	function init() {
+		document.getElementById('uf').value = ${param.idEstado != null ? param.idEstado : '0'};
+	}
+
 	function popularComboCidades(comboEstados) {
-		var idEstado;
+		var idEstado = comboEstados.options[comboEstados.selectedIndex].value;
 		location.href = 'main?acao=cadastros&getCidades=true&idEstado=' + idEstado;
 	}
 </script>
 </head>
-<body>
+<body onload="init()">
 
 	<jsp:include page="cabecalho.jsp"/>
 		<h1>Cadastros</h1>
@@ -72,7 +77,8 @@
 							<tr>
 								<td>UF:</td>
 								<td>
-									<select name="uf" onchange="">
+									<select name="uf" id="uf" onchange="popularComboCidades(this)">
+										<option value="0">Selecione...</option>
 									<%
 										List<UfDTO> listaUF = (List<UfDTO>) session.getAttribute("listaUF");
 										for (UfDTO uf : listaUF) {
@@ -87,7 +93,21 @@
 							<tr>
 								<td>Cidade:</td>
 								<td>
-									<select name="cidade"></select>
+									<select name="cidade">
+										<option>Selecione...</option>
+									<%
+										List<CidadeDTO> listaCidades = (List<CidadeDTO>) request.getAttribute("listaCidades");
+										if (listaCidades != null) {
+											for (CidadeDTO cidade : listaCidades) {
+									%>
+										<option value="<%= cidade.getIdCidade() %>">
+											<%= cidade.getDescricao() %>
+										</option>
+									<%
+											}
+										}
+									%>
+									</select>
 								</td>
 							</tr>
 							<tr>
