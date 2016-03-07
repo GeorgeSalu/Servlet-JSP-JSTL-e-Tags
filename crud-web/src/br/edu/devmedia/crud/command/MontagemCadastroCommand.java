@@ -9,12 +9,12 @@ import br.edu.devmedia.crud.dto.CidadeDTO;
 import br.edu.devmedia.crud.dto.UfDTO;
 import br.edu.devmedia.crud.exception.PersistenciaException;
 
-public class CadastroCommand implements Command {
+public class MontagemCadastroCommand implements Command {
 	
 	private String proximo;
-
+	
 	private CadastroDAO cadastroDAO;
-
+	
 	public String execute(HttpServletRequest request) {
 		cadastroDAO = new CadastroDAO();
 		proximo = "cadastros.jsp";
@@ -36,5 +36,6 @@ public class CadastroCommand implements Command {
 		}
 		
 		return proximo;
-	}		
+	}
+	
 }

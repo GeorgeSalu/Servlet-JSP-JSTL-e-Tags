@@ -10,9 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.edu.devmedia.crud.command.CadastroPessoaCommand;
 import br.edu.devmedia.crud.command.Command;
 import br.edu.devmedia.crud.command.LoginCommand;
-import br.edu.devmedia.crud.exception.NegocioException;
+import br.edu.devmedia.crud.command.MontagemCadastroCommand;
 
 @WebServlet("/main")
 public class MainSevlet extends HttpServlet {
@@ -24,6 +25,8 @@ public class MainSevlet extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		comandos.put("login", new LoginCommand());
+		comandos.put("montagemCadastro", new MontagemCadastroCommand());
+		comandos.put("cadastroPessoa", new CadastroPessoaCommand());
 	}
 
 	@Override

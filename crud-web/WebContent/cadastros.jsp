@@ -16,7 +16,7 @@
 
 	function popularComboCidades(comboEstados) {
 		var idEstado = comboEstados.options[comboEstados.selectedIndex].value;
-		location.href = 'main?acao=cadastros&getCidades=true&idEstado=' + idEstado;
+		location.href = 'main?acao=montagemCadastro&getCidades=true&idEstado=' + idEstado;
 	}
 </script>
 </head>
@@ -119,6 +119,7 @@
 						</table>
 					</fieldset>
 				</fieldset>
+				<input type="reset" value="Limpar"/>
 				<input type="submit" value="Cadastrar"/>
 			</form>
 		</div>
