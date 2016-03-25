@@ -21,6 +21,5 @@ public class LoginValidator implements Validator {
 		}
 		
 		return true;
-	}
-	
+	}	
 }
