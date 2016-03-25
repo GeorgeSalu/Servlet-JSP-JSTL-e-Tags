@@ -25,11 +25,11 @@ public class PessoaBO {
 	 * @return
 	 * @throws NegocioException 
 	 */
-	public boolean validarUsuario(PessoaDTO pessoaDTO) throws NegocioException {
+	public boolean validarPessoa(PessoaDTO pessoaDTO) throws NegocioException {
 		boolean isValido = true;
 		try {
 			if (pessoaDTO.getNome() == null || "".equals(pessoaDTO.getNome())) {
-				throw new NegocioException("Campo Nome obrigatório!");
+				throw new NegocioException(MensagemContantes.MSG_ERR_CAMPO_OBRIGATORIO.replace("?", "Nome"));
 			}
 			
 			// Valida campos obg
@@ -46,20 +46,20 @@ public class PessoaBO {
 			}
 			
 			if (pessoaDTO.getSexo() == ' ') {
-				throw new NegocioException("Campo Sexo obrigatório!");
+				throw new NegocioException(MensagemContantes.MSG_ERR_CAMPO_OBRIGATORIO.replace("?", "Sexo"));
 			}
 			
 			CidadeDTO cidade = pessoaDTO.getEndereco().getCidade();
 			if (cidade.getUf().getIdUF() == null) {
-				throw new NegocioException("Campo Estado obrigatório!");
+				throw new NegocioException(MensagemContantes.MSG_ERR_CAMPO_OBRIGATORIO.replace("?", "Estado"));
 			}
 			
 			if (cidade.getIdCidade() == null) {
-				throw new NegocioException("Campo Cidade obrigatório!");
+				throw new NegocioException(MensagemContantes.MSG_ERR_CAMPO_OBRIGATORIO.replace("?", "Cidade"));
 			}
 			
 			if (pessoaDTO.getEndereco().getLogradouro() == null || "".equals(pessoaDTO.getEndereco().getLogradouro())) {
-				throw new NegocioException("Campo Logradouro obrigatório!");
+				throw new NegocioException(MensagemContantes.MSG_ERR_CAMPO_OBRIGATORIO.replace("?", "Logradouro"));
 			}
 			
 			if (!isValido) {

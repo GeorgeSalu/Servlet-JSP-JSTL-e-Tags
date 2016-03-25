@@ -27,29 +27,28 @@
 		<h1>Cadastros</h1>
 	
 		<div class="main">
-			<form action="">
+			<form action="main?acao=cadastroPessoa" method="post">
+				<div class="erroDiv" style="display: ${msgErro != null ? 'block' : 'none'}">
+					${msgErro != null ? msgErro : ''}
+				</div>
 				<fieldset>
 					<legend>Cadastro de Pessoa</legend>
 					 
 					<table cellpadding="5">
 						<tr>
-							<td>Nome:</td>
-							<td><input type="text" name="nome" /></td>
+							<td>Nome*:</td>
+							<td><input type="text" name="nome" maxlength="45"/></td>
 						</tr>
 						<tr>
-							<td>Endereço:</td>
-							<td><input type="text" name="endereco" /></td>
-						</tr>
-						<tr>
-							<td>CPF:</td>
-							<td><input type="text" name="cpf" /></td>
+							<td>CPF*:</td>
+							<td><input type="text" name="cpf" maxlength="11"/></td>
 						</tr>
 						<tr>
 							<td>Data Nascimento:</td>
-							<td><input type="text" name="dtNasc" /></td>
+							<td><input type="text" name="dtNasc" maxlength="10"/></td>
 						</tr>
 						<tr>
-							<td>Sexo:</td>
+							<td>Sexo*:</td>
 							<td><input type="radio" name="sexo" value="M" checked="checked"/> Masculino
 							<input type="radio" name="sexo" value="F" /> Feminino</td>
 						</tr>
@@ -80,7 +79,7 @@
 						
 						<table cellpadding="5">
 							<tr>
-								<td>UF:</td>
+								<td>UF*:</td>
 								<td>
 									<select name="uf" id="uf" onchange="popularComboCidades(this)">
 										<option value="0">Selecione...</option>
@@ -96,7 +95,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>Cidade:</td>
+								<td>Cidade*:</td>
 								<td>
 									<select name="cidade">
 										<option>Selecione...</option>
@@ -116,7 +115,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>Logradouro:</td>
+								<td>Logradouro*:</td>
 								<td>
 									<input type="text" name="logradouro"/>
 								</td>
@@ -124,6 +123,7 @@
 						</table>
 					</fieldset>
 				</fieldset>
+				<span>* Campos obrigatórios</span>
 				<input type="reset" value="Limpar"/>
 				<input type="submit" value="Cadastrar"/>
 			</form>
