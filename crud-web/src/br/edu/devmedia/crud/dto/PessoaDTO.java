@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import br.edu.devmedia.crud.util.PreferenciaMusical;
-
 public class PessoaDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,7 +18,7 @@ public class PessoaDTO implements Serializable {
 
 	private char sexo;
 
-	private List<PreferenciaMusical> preferencias;
+	private List<PreferenciaMusicalDTO> preferencias;
 
 	private String miniBio;
 
@@ -66,11 +64,11 @@ public class PessoaDTO implements Serializable {
 		this.sexo = sexo;
 	}
 
-	public List<PreferenciaMusical> getPreferencias() {
+	public List<PreferenciaMusicalDTO> getPreferencias() {
 		return preferencias;
 	}
 
-	public void setPreferencias(List<PreferenciaMusical> preferencias) {
+	public void setPreferencias(List<PreferenciaMusicalDTO> preferencias) {
 		this.preferencias = preferencias;
 	}
 
