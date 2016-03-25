@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.devmedia.crud.dto.CidadeDTO;
+import br.edu.devmedia.crud.dto.PreferenciaMusicalDTO;
 import br.edu.devmedia.crud.dto.UfDTO;
 import br.edu.devmedia.crud.exception.PersistenciaException;
 import br.edu.devmedia.crud.util.ConexaoUtil;
@@ -40,6 +41,7 @@ public class CadastroDAO {
 			while (resultSet.next()) {
 				UfDTO ufDTO = new UfDTO();
 				ufDTO.setIdUF(resultSet.getInt(1));
+				ufDTO.setSigla(resultSet.getString(2));
 				ufDTO.setDescricao(resultSet.getString(3));
 				
 				lista.add(ufDTO);
@@ -49,7 +51,36 @@ public class CadastroDAO {
 		}
 		return lista;
 	}
-
+	
+	/**
+	 * Método que retorna a lista das preferências musicais na tabela
+	 * tb_preferencia
+	 * 
+	 * @return
+	 * @throws PersistenciaException
+	 */
+	public List<PreferenciaMusicalDTO> listarPreferencias() throws PersistenciaException {
+		List<PreferenciaMusicalDTO> listaPreferencias = new ArrayList<>();
+		try {
+			Connection conexao = ConexaoUtil.getConexao();
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * FROM TB_PREFERENCIA");
+			
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				PreferenciaMusicalDTO preferenciaMusical = new PreferenciaMusicalDTO();
+				preferenciaMusical.setIdPreferencia(resultSet.getInt(1));
+				preferenciaMusical.setDescricao(resultSet.getString(2));
+				
+				listaPreferencias.add(preferenciaMusical);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new PersistenciaException(e);
+		}
+		return listaPreferencias;
+	}
 	
 	/**
 	 * Método de consulta das cidades de acordo com o id do estado passado por
@@ -90,5 +121,4 @@ public class CadastroDAO {
 		return listaCidades;
 	}
 
-	
 }

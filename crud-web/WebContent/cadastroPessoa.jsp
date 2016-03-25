@@ -1,3 +1,4 @@
+<%@page import="br.edu.devmedia.crud.dto.PreferenciaMusicalDTO"%>
 <%@page import="br.edu.devmedia.crud.dto.UfDTO"%>
 <%@page import="br.edu.devmedia.crud.dto.CidadeDTO"%>
 <%@page import="java.util.List"%>
@@ -55,11 +56,15 @@
 						<tr>
 							<td>Preferências:</td>
 							<td>
-								<input type="checkbox" name="gostos" value="jazz" /> Jazz
-								<input type="checkbox" name="gostos" value="blues" /> Blues
-								<input type="checkbox" name="gostos" value="mpb" /> MPB
-								<input type="checkbox" name="gostos" value="pop" /> Pop
-								<input type="checkbox" name="gostos" value="rock" /> Rock
+								<%
+									List<PreferenciaMusicalDTO> preferencias = (List<PreferenciaMusicalDTO>) session.getAttribute("listaPreferencias");
+									for (PreferenciaMusicalDTO preferencia : preferencias) {
+								%>
+									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>" />
+									<%= preferencia.getDescricao() %>
+								<%
+									}
+								%>
 							</td>
 						</tr>
 						<tr>

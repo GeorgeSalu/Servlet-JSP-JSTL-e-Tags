@@ -12,7 +12,7 @@ public class CadastroPessoaCommand implements Command {
 	
 	public String execute(HttpServletRequest request) {
 		cadastroDAO = new CadastroDAO();
-		proximo = "cadastros.jsp";
+		proximo = "cadastroPessoa.jsp";
 		
 		
 		
