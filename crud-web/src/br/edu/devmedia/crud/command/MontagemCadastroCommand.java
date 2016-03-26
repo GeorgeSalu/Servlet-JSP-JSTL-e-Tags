@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import br.edu.devmedia.crud.dao.CadastroDAO;
+import br.edu.devmedia.crud.dao.PessoaDAO;
 import br.edu.devmedia.crud.dto.CidadeDTO;
 import br.edu.devmedia.crud.dto.PreferenciaMusicalDTO;
 import br.edu.devmedia.crud.dto.UfDTO;
@@ -15,10 +15,10 @@ public class MontagemCadastroCommand implements Command {
 
 	private String proximo;
 	
-	private CadastroDAO cadastroDAO;
+	private PessoaDAO cadastroDAO;
 	
 	public String execute(HttpServletRequest request) {
-		cadastroDAO = new CadastroDAO();
+		cadastroDAO = new PessoaDAO();
 		proximo = "cadastroPessoa.jsp";
 		String getCidades = request.getParameter("getCidades");
 		

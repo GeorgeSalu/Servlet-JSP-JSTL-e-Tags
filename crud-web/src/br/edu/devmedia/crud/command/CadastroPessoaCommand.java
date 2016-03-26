@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import br.edu.devmedia.crud.bo.PessoaBO;
-import br.edu.devmedia.crud.dao.CadastroDAO;
+import br.edu.devmedia.crud.dao.PessoaDAO;
 import br.edu.devmedia.crud.dto.CidadeDTO;
 import br.edu.devmedia.crud.dto.EnderecoDTO;
 import br.edu.devmedia.crud.dto.PessoaDTO;

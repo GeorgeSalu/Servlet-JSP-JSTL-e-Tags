@@ -20,7 +20,7 @@ import br.edu.devmedia.crud.util.ConexaoUtil;
  * @author George
  * 
  */
-public class CadastroDAO {
+public class PessoaDAO {
 
 	/**
 	 * Método que retorna a lista de UF's
@@ -119,6 +119,49 @@ public class CadastroDAO {
 			throw new PersistenciaException(e);
 		}
 		return listaCidades;
+	}
+	
+	public void cadastrarPessoa() throws PersistenciaException {
+		try {
+			Connection conexao = ConexaoUtil.getConexao();
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("INSERT INTO TB_PESSOA");
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new PersistenciaException(e);
+		}
+	}
+	
+	/**
+	 * Método de inserção do objeto de EnderecoDTO para a tabela de TB_ENDERECO
+	 * retornando o id gerado para o mesmo insert.
+	 * 
+	 * @param enderecoDTO
+	 * @return
+	 * @throws PersistenciaException
+	 */
+	public Integer cadastrarEndereco(EnderecoDTO enderecoDTO) throws PersistenciaException {
+		Integer idGerado = null;
+		try {
+			Connection conexao = ConexaoUtil.getConexao();
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("INSERT INTO TB_ENDERECO(LOGRADOURO, COD_CIDADE)");
+			sql.append(" VALUES(?, ?)");
+			
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			statement.setString(1, enderecoDTO.getLogradouro());
+			statement.setInt(2, enderecoDTO.getCidade().getIdCidade());
+			statement.executeUpdate();
+			
+			ResultSet resultSet = statement.getGeneratedKeys();
+			if (resultSet.first()) {
+				idGerado = resultSet.getInt(1);
+			}
+			return idGerado;
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new PersistenciaException(e);
+		}
 	}
 
 }
