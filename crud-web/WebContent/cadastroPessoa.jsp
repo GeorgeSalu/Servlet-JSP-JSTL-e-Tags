@@ -37,20 +37,20 @@
 					<table cellpadding="5">
 						<tr>
 							<td>Nome*:</td>
-							<td><input type="text" name="nome" maxlength="45"/></td>
+							<td><input type="text" name="nome" maxlength="45" value="${param.nome}"/></td>
 						</tr>
 						<tr>
 							<td>CPF*:</td>
-							<td><input type="text" name="cpf" maxlength="11"/></td>
+							<td><input type="text" name="cpf" maxlength="11" value="${param.cpf}"/></td>
 						</tr>
 						<tr>
 							<td>Data Nascimento:</td>
-							<td><input type="text" name="dtNasc" maxlength="10"/></td>
+							<td><input type="text" name="dtNasc" maxlength="10" value="${param.dtNasc}"/></td>
 						</tr>
 						<tr>
 							<td>Sexo*:</td>
-							<td><input type="radio" name="sexo" value="M" checked="checked"/> Masculino
-							<input type="radio" name="sexo" value="F" /> Feminino</td>
+							<td><input type="radio" name="sexo" value="M" <%= "M".equals(request.getParameter("sexo")) ? "checked" : "" %>/> Masculino
+							<input type="radio" name="sexo" value="F" <%= "F".equals(request.getParameter("sexo")) ? "checked" : "" %>/> Feminino</td>
 						</tr>
 						<tr>
 							<td>Preferências:</td>
@@ -69,7 +69,7 @@
 						<tr>
 							<td>Mini-biografia:</td>
 							<td>
-								<textarea rows="5" cols="35" name="miniBio"></textarea>
+								<textarea rows="5" cols="35" name="miniBio">${param.miniBio}</textarea>
 							</td>
 						</tr>
 					</table>
@@ -98,7 +98,7 @@
 								<td>Cidade*:</td>
 								<td>
 									<select name="cidade">
-										<option>Selecione...</option>
+										<option value="0">Selecione...</option>
 									<%
 										List<CidadeDTO> listaCidades = (List<CidadeDTO>) request.getAttribute("listaCidades");
 										if (listaCidades != null) {
@@ -117,7 +117,7 @@
 							<tr>
 								<td>Logradouro*:</td>
 								<td>
-									<input type="text" name="logradouro"/>
+									<input type="text" name="logradouro" value="${param.logradouro}"/>
 								</td>
 							</tr>
 						</table>

@@ -15,7 +15,7 @@ public class CPFValidator implements Validator {
 			String cpf = (String) valores.get(key);
 
 			if (!"".equals(cpf)) {
-				if (!Util.isCPF(cpf)) {				
+				if (!Util.isCPF(cpf)) {
 					msgErro += MensagemContantes.MSG_ERR_CAMPO_INVALIDO.replace("?", key).concat("<br/>");
 				}
 				if (cpf.length() < 11) {
@@ -24,6 +24,8 @@ public class CPFValidator implements Validator {
 				if (cpf.length() > 11) {				
 					msgErro += MensagemContantes.MSG_ERR_CAMPO_CPF_MAIOR_RECOMENDADO.replace("?", key).concat("<br/>");
 				}
+			} else {
+				msgErro += MensagemContantes.MSG_ERR_CAMPO_OBRIGATORIO.replace("?", key).concat("<br/>");
 			}
 		}
 		if (!"".equals(msgErro)) {

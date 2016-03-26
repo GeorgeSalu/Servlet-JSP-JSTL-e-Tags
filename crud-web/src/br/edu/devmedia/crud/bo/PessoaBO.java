@@ -50,11 +50,11 @@ public class PessoaBO {
 			}
 			
 			CidadeDTO cidade = pessoaDTO.getEndereco().getCidade();
-			if (cidade.getUf().getIdUF() == null) {
+			if (cidade.getUf().getIdUF() == null || cidade.getUf().getIdUF() == 0) {
 				throw new NegocioException(MensagemContantes.MSG_ERR_CAMPO_OBRIGATORIO.replace("?", "Estado"));
 			}
 			
-			if (cidade.getIdCidade() == null) {
+			if (cidade.getIdCidade() == null || cidade.getIdCidade() == 0) {
 				throw new NegocioException(MensagemContantes.MSG_ERR_CAMPO_OBRIGATORIO.replace("?", "Cidade"));
 			}
 			
@@ -72,5 +72,6 @@ public class PessoaBO {
 
 		return isValido;
 	}
+
 
 }
