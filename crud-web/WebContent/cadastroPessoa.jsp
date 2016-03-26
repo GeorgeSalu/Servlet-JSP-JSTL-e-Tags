@@ -1,3 +1,4 @@
+<%@page import="java.util.Arrays"%>
 <%@page import="br.edu.devmedia.crud.dto.PreferenciaMusicalDTO"%>
 <%@page import="br.edu.devmedia.crud.dto.UfDTO"%>
 <%@page import="br.edu.devmedia.crud.dto.CidadeDTO"%>
@@ -11,17 +12,21 @@
 <title>Cadastros</title>
 <link rel="stylesheet" href="css/global.css"/>
 <script type="text/javascript">
-	function init() {
-		document.getElementById('uf').value = ${param.idEstado != null ? param.idEstado : '0'};
-	}
-
 	function popularComboCidades(comboEstados) {
 		var idEstado = comboEstados.options[comboEstados.selectedIndex].value;
-		location.href = 'main?acao=montagemCadastro&getCidades=true&idEstado=' + idEstado;
+		var formCadastro = document.forms[0];
+		formCadastro.action = 'main?acao=montagemCadastro&getCidades=true&idEstado=' + idEstado;
+		formCadastro.submit();
+	}
+	
+	function cadastrar() {
+		var formCadastro = document.forms[0];
+		formCadastro.action='main?acao=cadastroPessoa';
+		formCadastro.submit();
 	}
 </script>
 </head>
-<body onload="init()">
+<body>
 
 	<jsp:include page="cabecalho.jsp"/>
 		<h1>Cadastros</h1>
@@ -57,11 +62,15 @@
 							<td>
 								<%
 									List<PreferenciaMusicalDTO> preferencias = (List<PreferenciaMusicalDTO>) session.getAttribute("listaPreferencias");
-									for (PreferenciaMusicalDTO preferencia : preferencias) {
+									String[] paramPrefs = request.getParameterValues("gostos");
+									if (preferencias != null) {
+										for (PreferenciaMusicalDTO preferencia : preferencias) {
 								%>
-									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>" />
+									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>" 
+										<%= paramPrefs != null && Arrays.asList(paramPrefs).contains(String.valueOf(preferencia.getIdPreferencia())) ? "checked" : "" %>/>
 									<%= preferencia.getDescricao() %>
 								<%
+										}
 									}
 								%>
 							</td>
@@ -87,7 +96,9 @@
 										List<UfDTO> listaUF = (List<UfDTO>) session.getAttribute("listaUF");
 										for (UfDTO uf : listaUF) {
 									%>
-										<option value="<%=uf.getIdUF()%>"><%=uf.getDescricao()%></option>
+										<option value="<%=uf.getIdUF()%>" 
+											<%= request.getParameter("uf") != null && String.valueOf(uf.getIdUF()).equals(request.getParameter("uf")) ? "selected='selected'" : "" %>>
+												<%=uf.getDescricao()%></option>
 									<%
 										}
 									%>
@@ -104,7 +115,8 @@
 										if (listaCidades != null) {
 											for (CidadeDTO cidade : listaCidades) {
 									%>
-										<option value="<%= cidade.getIdCidade() %>">
+										<option value="<%= cidade.getIdCidade() %>"
+											<%= request.getParameter("cidade") != null && String.valueOf(cidade.getIdCidade()).equals(request.getParameter("cidade")) ? "selected='selected'" : "" %>>
 											<%= cidade.getDescricao() %>
 										</option>
 									<%
@@ -125,7 +137,7 @@
 				</fieldset>
 				<span>* Campos obrigatórios</span>
 				<input type="reset" value="Limpar"/>
-				<input type="submit" value="Cadastrar"/>
+				<input type="button" value="Cadastrar" onclick="cadastrar()"/>
 			</form>
 		</div>
 	
