@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.devmedia.crud.dto.CidadeDTO;
+import br.edu.devmedia.crud.dto.EnderecoDTO;
 import br.edu.devmedia.crud.dto.PreferenciaMusicalDTO;
 import br.edu.devmedia.crud.dto.UfDTO;
 import br.edu.devmedia.crud.exception.PersistenciaException;
