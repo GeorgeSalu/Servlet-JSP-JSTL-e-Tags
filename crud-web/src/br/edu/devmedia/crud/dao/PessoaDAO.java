@@ -4,11 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.devmedia.crud.dto.CidadeDTO;
 import br.edu.devmedia.crud.dto.EnderecoDTO;
+import br.edu.devmedia.crud.dto.PessoaDTO;
 import br.edu.devmedia.crud.dto.PreferenciaMusicalDTO;
 import br.edu.devmedia.crud.dto.UfDTO;
 import br.edu.devmedia.crud.exception.PersistenciaException;
@@ -23,6 +27,8 @@ import br.edu.devmedia.crud.util.ConexaoUtil;
  */
 public class PessoaDAO {
 
+	private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	
 	/**
 	 * Método que retorna a lista de UF's
 	 * 
@@ -31,8 +37,9 @@ public class PessoaDAO {
 	 */
 	public List<UfDTO> listarUFs() throws PersistenciaException {
 		List<UfDTO> lista = new ArrayList<>();
+		Connection conexao = null;
 		try {
-			Connection conexao = ConexaoUtil.getConexao();
+			conexao = ConexaoUtil.getConexao();
 			
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT * FROM TB_UF");
@@ -49,6 +56,12 @@ public class PessoaDAO {
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new PersistenciaException(e);
+		} finally {
+			try {
+				conexao.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return lista;
 	}
@@ -62,8 +75,9 @@ public class PessoaDAO {
 	 */
 	public List<PreferenciaMusicalDTO> listarPreferencias() throws PersistenciaException {
 		List<PreferenciaMusicalDTO> listaPreferencias = new ArrayList<>();
+		Connection conexao = null;
 		try {
-			Connection conexao = ConexaoUtil.getConexao();
+			conexao = ConexaoUtil.getConexao();
 			
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT * FROM TB_PREFERENCIA");
@@ -79,6 +93,12 @@ public class PessoaDAO {
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new PersistenciaException(e);
+		} finally {
+			try {
+				conexao.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return listaPreferencias;
 	}
@@ -93,8 +113,9 @@ public class PessoaDAO {
 	 */
 	public List<CidadeDTO> consultarCidadesPorEstado(Integer idEstado) throws PersistenciaException {
 		List<CidadeDTO> listaCidades = new ArrayList<>();
+		Connection conexao = null;
 		try {
-			Connection conexao = ConexaoUtil.getConexao();
+			conexao = ConexaoUtil.getConexao();
 			
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT * FROM TB_CIDADE ");
@@ -118,18 +139,51 @@ public class PessoaDAO {
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new PersistenciaException(e);
+		} finally {
+			try {
+				conexao.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return listaCidades;
 	}
 	
-	public void cadastrarPessoa() throws PersistenciaException {
+	public void cadastrarPessoa(PessoaDTO pessoaDTO) throws PersistenciaException {
+		Connection conexao = null;
 		try {
-			Connection conexao = ConexaoUtil.getConexao();
+			Integer codPessoa = null;
+			Integer codEndereco = cadastrarEndereco(pessoaDTO.getEndereco());
+			
+			conexao = ConexaoUtil.getConexao();
 			
 			StringBuilder sql = new StringBuilder();
-			sql.append("INSERT INTO TB_PESSOA");
-		} catch (ClassNotFoundException | SQLException e) {
+			sql.append("INSERT INTO TB_PESSOA(NOME, CPF, DT_NASC, SEXO, MINI_BIO, COD_ENDERECO)");
+			sql.append(" VALUES(?, ?, ?, ?, ?, ?)");
+			
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			statement.setString(1, pessoaDTO.getNome());
+			statement.setString(2, pessoaDTO.getCpf());
+			java.sql.Date dtNasc = new java.sql.Date(dateFormat.parse(pessoaDTO.getDtNasc()).getTime());
+			statement.setDate(3, dtNasc);
+			statement.setString(4, String.valueOf(pessoaDTO.getSexo()));
+			statement.setString(5, pessoaDTO.getMiniBio());
+			statement.setInt(6, codEndereco);
+			
+			statement.executeUpdate();
+			
+			ResultSet resultSet = statement.getGeneratedKeys();
+			if (resultSet.first()) {
+				codPessoa = resultSet.getInt(1);
+			}
+		} catch (ClassNotFoundException | SQLException | ParseException e) {
 			throw new PersistenciaException(e);
+		} finally {
+			try {
+				conexao.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -143,8 +197,9 @@ public class PessoaDAO {
 	 */
 	public Integer cadastrarEndereco(EnderecoDTO enderecoDTO) throws PersistenciaException {
 		Integer idGerado = null;
+		Connection conexao = null;
 		try {
-			Connection conexao = ConexaoUtil.getConexao();
+			conexao = ConexaoUtil.getConexao();
 			
 			StringBuilder sql = new StringBuilder();
 			sql.append("INSERT INTO TB_ENDERECO(LOGRADOURO, COD_CIDADE)");
@@ -162,6 +217,12 @@ public class PessoaDAO {
 			return idGerado;
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new PersistenciaException(e);
+		} finally {
+			try {
+				conexao.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
