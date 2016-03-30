@@ -149,14 +149,61 @@ public class PessoaDAO {
 		return listaCidades;
 	}
 	
+	/**
+	 * Método de cadastro da lista de preferências passada por parâmetro em
+	 * conjunto com o código da pessoa associada.
+	 * 
+	 * @param preferencias
+	 * @param codPessoa
+	 * @throws PersistenciaException
+	 */
+	public void cadastrarPreferencias(List<PreferenciaMusicalDTO> preferencias, Integer codPessoa) throws PersistenciaException {
+		Connection conexao = null;
+		try {
+			conexao = ConexaoUtil.getConexao();
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("INSERT INTO TB_PREFERENCIA_PESSOA ");
+			sql.append(" VALUES(?, ?)");
+			
+			for (PreferenciaMusicalDTO preferencia : preferencias) {
+				PreparedStatement statement = conexao.prepareStatement(sql.toString());
+				statement.setInt(1, preferencia.getIdPreferencia());
+				statement.setInt(2, codPessoa);
+				
+				statement.execute();
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new PersistenciaException(e);
+		} finally {
+			try {
+				conexao.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Método principal de cadastro da pessoa, responsável por gerenciar as
+	 * chamadas aos demais métodos de inserção das entidades relacionadas.
+	 * 
+	 * @param pessoaDTO
+	 * @throws PersistenciaException
+	 */
 	public void cadastrarPessoa(PessoaDTO pessoaDTO) throws PersistenciaException {
 		Connection conexao = null;
 		try {
 			Integer codPessoa = null;
+			// Cadastra o endereço e recebe o id gerado
 			Integer codEndereco = cadastrarEndereco(pessoaDTO.getEndereco());
 			
 			conexao = ConexaoUtil.getConexao();
 			
+			/*
+			 * Cadastra a pessoa com o codEndereco gerado e retorna o id da
+			 * pessoa.
+			 */
 			StringBuilder sql = new StringBuilder();
 			sql.append("INSERT INTO TB_PESSOA(NOME, CPF, DT_NASC, SEXO, MINI_BIO, COD_ENDERECO)");
 			sql.append(" VALUES(?, ?, ?, ?, ?, ?)");
@@ -176,6 +223,8 @@ public class PessoaDAO {
 			if (resultSet.first()) {
 				codPessoa = resultSet.getInt(1);
 			}
+			// Chama o cadastro de preferências
+			cadastrarPreferencias(pessoaDTO.getPreferencias(), codPessoa);
 		} catch (ClassNotFoundException | SQLException | ParseException e) {
 			throw new PersistenciaException(e);
 		} finally {
