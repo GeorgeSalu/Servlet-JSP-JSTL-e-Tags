@@ -27,7 +27,7 @@ import br.edu.devmedia.crud.util.ConexaoUtil;
  */
 public class PessoaDAO {
 
-	private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	
 	/**
 	 * Método que retorna a lista de UF's
@@ -315,5 +315,4 @@ public class PessoaDAO {
 		
 		return listaPessoas;
 	}
-
 }

@@ -69,6 +69,7 @@ public class CadastroPessoaCommand implements Command {
 				request.setAttribute("msgErro", MensagemContantes.MSG_ERR_PESSOA_DADOS_INVALIDOS);
 			} else {
 				pessoaBO.cadastrarPessoa(pessoaDTO);
+				proximo = "main?acao=consultas";
 				request.setAttribute("msgSucesso", MensagemContantes.MSG_SUC_CADASTRO_PESSOA);
 			}
 		} catch (Exception e) {
