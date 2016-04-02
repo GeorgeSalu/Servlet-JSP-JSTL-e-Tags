@@ -3,9 +3,11 @@ package br.edu.devmedia.crud.bo;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.edu.devmedia.crud.dao.PessoaDAO;
 import br.edu.devmedia.crud.dto.CidadeDTO;
 import br.edu.devmedia.crud.dto.PessoaDTO;
 import br.edu.devmedia.crud.exception.NegocioException;
+import br.edu.devmedia.crud.exception.PersistenciaException;
 import br.edu.devmedia.crud.util.MensagemContantes;
 import br.edu.devmedia.crud.validator.CPFValidator;
 import br.edu.devmedia.crud.validator.DataValidator;
@@ -17,6 +19,12 @@ import br.edu.devmedia.crud.validator.DataValidator;
  * 
  */
 public class PessoaBO {
+
+	private PessoaDAO pessoaDAO;
+	
+	public PessoaBO() {
+		pessoaDAO = new PessoaDAO();
+	}
 
 	/**
 	 * Método resposável por validar a pessoa
@@ -72,6 +80,20 @@ public class PessoaBO {
 
 		return isValido;
 	}
-
+	
+	/**
+	 * Método de cadastro de pessoa negocialmente.
+	 * 
+	 * @param pessoaDTO
+	 * @throws NegocioException
+	 */
+	public void cadastrarPessoa(PessoaDTO pessoaDTO) throws NegocioException {
+		try {
+			pessoaDAO.cadastrarPessoa(pessoaDTO);
+		} catch (PersistenciaException e) {
+			e.printStackTrace();
+			throw new NegocioException(e);
+		}
+	}
 
 }

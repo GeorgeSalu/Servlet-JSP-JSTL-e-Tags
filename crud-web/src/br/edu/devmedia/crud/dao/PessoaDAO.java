@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +18,6 @@ import br.edu.devmedia.crud.dto.PreferenciaMusicalDTO;
 import br.edu.devmedia.crud.dto.UfDTO;
 import br.edu.devmedia.crud.exception.PersistenciaException;
 import br.edu.devmedia.crud.util.ConexaoUtil;
-
 
 /**
  * Classe DAO de acesso a dados referentes aos cadastros da aplicação
@@ -208,7 +208,7 @@ public class PessoaDAO {
 			sql.append("INSERT INTO TB_PESSOA(NOME, CPF, DT_NASC, SEXO, MINI_BIO, COD_ENDERECO)");
 			sql.append(" VALUES(?, ?, ?, ?, ?, ?)");
 			
-			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			PreparedStatement statement = conexao.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, pessoaDTO.getNome());
 			statement.setString(2, pessoaDTO.getCpf());
 			java.sql.Date dtNasc = new java.sql.Date(dateFormat.parse(pessoaDTO.getDtNasc()).getTime());
@@ -254,7 +254,7 @@ public class PessoaDAO {
 			sql.append("INSERT INTO TB_ENDERECO(LOGRADOURO, COD_CIDADE)");
 			sql.append(" VALUES(?, ?)");
 			
-			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			PreparedStatement statement = conexao.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, enderecoDTO.getLogradouro());
 			statement.setInt(2, enderecoDTO.getCidade().getIdCidade());
 			statement.executeUpdate();

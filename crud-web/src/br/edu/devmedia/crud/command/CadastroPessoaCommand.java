@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import br.edu.devmedia.crud.bo.PessoaBO;
-import br.edu.devmedia.crud.dao.PessoaDAO;
 import br.edu.devmedia.crud.dto.CidadeDTO;
 import br.edu.devmedia.crud.dto.EnderecoDTO;
 import br.edu.devmedia.crud.dto.PessoaDTO;
@@ -68,6 +67,9 @@ public class CadastroPessoaCommand implements Command {
 			boolean isValido = pessoaBO.validarPessoa(pessoaDTO);
 			if (!isValido) {
 				request.setAttribute("msgErro", MensagemContantes.MSG_ERR_PESSOA_DADOS_INVALIDOS);
+			} else {
+				pessoaBO.cadastrarPessoa(pessoaDTO);
+				request.setAttribute("msgSucesso", MensagemContantes.MSG_SUC_CADASTRO_PESSOA);
 			}
 		} catch (Exception e) {
 			request.setAttribute("msgErro", e.getMessage());
