@@ -274,5 +274,46 @@ public class PessoaDAO {
 			}
 		}
 	}
+	
+	/**
+	 * Método de consulta de todas as entidades de pessoas e suas respectivas
+	 * dependências.
+	 * 
+	 * @return
+	 * @throws PersistenciaException
+	 */
+	public List<PessoaDTO> listarPessoas() throws PersistenciaException {
+		List<PessoaDTO> listaPessoas = new ArrayList<>();
+		Connection conexao = null;
+		try {
+			conexao = ConexaoUtil.getConexao();
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * FROM TB_PESSOA");
+			
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				PessoaDTO pessoaDTO = new PessoaDTO();
+				pessoaDTO.setIdPessoa(resultSet.getInt("id_pessoa"));
+				pessoaDTO.setNome(resultSet.getString("nome"));
+				pessoaDTO.setSexo(resultSet.getString("sexo").charAt(0));
+				pessoaDTO.setDtNasc(dateFormat.format(resultSet.getDate("dt_nasc")));
+				
+				// TODO Preencher demais objetos da composição
+				listaPessoas.add(pessoaDTO);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new PersistenciaException(e);
+		} finally {
+			try {
+				conexao.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return listaPessoas;
+	}
 
 }

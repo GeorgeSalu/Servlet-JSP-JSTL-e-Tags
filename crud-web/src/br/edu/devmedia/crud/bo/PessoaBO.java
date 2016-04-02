@@ -1,6 +1,7 @@
 package br.edu.devmedia.crud.bo;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import br.edu.devmedia.crud.dao.PessoaDAO;
@@ -96,5 +97,22 @@ public class PessoaBO {
 		}
 	}
 
+	/**
+	 * Método de listagem das pessoas a partir do acesso à camada de
+	 * persistência
+	 * 
+	 * @return
+	 * @throws NegocioException
+	 */
+	public List<PessoaDTO> listarPessoas() throws NegocioException {
+		List<PessoaDTO> listaPessoas = null;
+		try {
+			listaPessoas = pessoaDAO.listarPessoas();
+		} catch (PersistenciaException e) {
+			e.printStackTrace();
+			throw new NegocioException(e);
+		}
+		return listaPessoas;
+	}
 
 }
