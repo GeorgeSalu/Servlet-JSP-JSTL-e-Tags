@@ -33,12 +33,7 @@
 	
 		<div class="main">
 			<form action="main?acao=cadastroPessoa" method="post">
-				<div class="erroDiv" style="display: ${msgErro != null ? 'block' : 'none'}">
-					${msgErro != null ? msgErro : ''}
-				</div>
-				<div class="sucDiv" style="display: ${msgSucesso != null ? 'block' : 'none'}">
-					${msgSucesso != null ? msgSucesso : ''}
-				</div>
+				<jsp:include page="msg.jsp"/>
 				<fieldset>
 					<legend>Cadastro de Pessoa</legend>
 					 

@@ -12,10 +12,14 @@
 	<jsp:include page="cabecalho.jsp"/>
 	
 	<div class="main">
-		<fieldset>
-			<legend>Consultas</legend> 
-			<h1>Consultas</h1>
-		</fieldset>
+		<form action="">
+			<jsp:include page="msg.jsp"/>
+			
+			<fieldset>
+				<legend>Consultas</legend> 
+				<h1>Consultas</h1>
+			</fieldset>
+		</form>
 	</div>
 	
 	<jsp:include page="rodape.jsp"/>
