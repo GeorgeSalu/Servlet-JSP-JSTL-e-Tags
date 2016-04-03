@@ -21,13 +21,14 @@
 				<legend>Consultas</legend> 
 				<h1>Consultas</h1>
 				
-				<table>
+				<table width="100%" border="1" cellspacing="0" cellpadding="5">
 					<thead>
 						<tr>
 							<th>Id</th>
 							<th>Nome</th>
 							<th>Sexo</th>
 							<th>Dt. Nasc.</th>
+							<th colspan="2">Ações</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -36,10 +37,20 @@
 						for (PessoaDTO pessoa : listaPessoas) {
 					%>
 						<tr>
-							<td><%= pessoa.getIdPessoa() %></td>
-							<td><%= pessoa.getNome() %></td>
-							<td><%= pessoa.getSexo() %></td>
-							<td><%= pessoa.getDtNasc() %></td>
+							<td class="alignCenter"><%= pessoa.getIdPessoa() %></td>
+							<td class="alignLeft"><%= pessoa.getNome() %></td>
+							<td class="alignCenter"><%= pessoa.getSexo() %></td>
+							<td class="alignCenter"><%= pessoa.getDtNasc() %></td>
+							<td class="alignCenter">
+								<a href="" title="Editar">
+									<img alt="Edição de Pessoa" src="img/edit.png"/>
+								</a>
+							</td>
+							<td class="alignCenter">
+								<a href="" title="Deletar">
+									<img alt="Remoção de Pessoa" src="img/delete.png"/>
+								</a>
+							</td>
 						</tr>
 					<%
 						}
