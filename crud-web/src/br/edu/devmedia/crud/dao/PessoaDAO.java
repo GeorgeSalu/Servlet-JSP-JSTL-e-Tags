@@ -27,7 +27,7 @@ import br.edu.devmedia.crud.util.ConexaoUtil;
  */
 public class PessoaDAO {
 
-private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	
 	/**
 	 * Método que retorna a lista de UF's
@@ -289,7 +289,16 @@ private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			conexao = ConexaoUtil.getConexao();
 			
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT * FROM TB_PESSOA");
+			sql.append("SELECT PE.ID_PESSOA, PE.NOME, PE.CPF, PE.DT_NASC, PE.SEXO,");
+			sql.append("	EN.LOGRADOURO, CID.DESCRICAO AS DESC_CID, UF.DESCRICAO AS DESC_UF");
+			sql.append(" FROM TB_PESSOA PE");
+			sql.append(" INNER JOIN TB_ENDERECO EN");
+			sql.append("	ON PE.COD_ENDERECO = EN.ID_ENDERECO");
+			sql.append("		INNER JOIN TB_CIDADE CID");
+			sql.append("			ON EN.COD_CIDADE = CID.ID_CIDADE");
+			sql.append("		INNER JOIN TB_UF UF");
+			sql.append("			ON CID.COD_ESTADO = UF.ID_UF");
+			sql.append(" ORDER BY PE.ID_PESSOA;");
 			
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
 			ResultSet resultSet = statement.executeQuery();
@@ -297,10 +306,23 @@ private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 				PessoaDTO pessoaDTO = new PessoaDTO();
 				pessoaDTO.setIdPessoa(resultSet.getInt("id_pessoa"));
 				pessoaDTO.setNome(resultSet.getString("nome"));
+				pessoaDTO.setCpf(resultSet.getString("cpf"));
 				pessoaDTO.setSexo(resultSet.getString("sexo").charAt(0));
 				pessoaDTO.setDtNasc(dateFormat.format(resultSet.getDate("dt_nasc")));
 				
-				// TODO Preencher demais objetos da composição
+				EnderecoDTO enderecoDTO = new EnderecoDTO();
+				enderecoDTO.setLogradouro(resultSet.getString("logradouro"));
+				
+				CidadeDTO cidadeDTO = new CidadeDTO();
+				cidadeDTO.setDescricao(resultSet.getString("desc_cid"));
+				
+				UfDTO ufDTO = new UfDTO();
+				ufDTO.setDescricao(resultSet.getString("desc_uf")); 
+				
+				enderecoDTO.setCidade(cidadeDTO);
+				cidadeDTO.setUf(ufDTO);
+				pessoaDTO.setEndereco(enderecoDTO);
+				
 				listaPessoas.add(pessoaDTO);
 			}
 		} catch (ClassNotFoundException | SQLException e) {

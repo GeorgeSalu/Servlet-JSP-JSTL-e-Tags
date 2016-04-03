@@ -27,7 +27,11 @@
 							<th>Id</th>
 							<th>Nome</th>
 							<th>Sexo</th>
+							<th>CPF</th>
 							<th>Dt. Nasc.</th>
+							<th>Endereço</th>
+							<th>Cidade</th>
+							<th>UF</th>
 							<th colspan="2">Ações</th>
 						</tr>
 					</thead>
@@ -40,7 +44,11 @@
 							<td class="alignCenter"><%= pessoa.getIdPessoa() %></td>
 							<td class="alignLeft"><%= pessoa.getNome() %></td>
 							<td class="alignCenter"><%= pessoa.getSexo() %></td>
+							<td class="alignCenter"><%= pessoa.getCpf() %></td>
 							<td class="alignCenter"><%= pessoa.getDtNasc() %></td>
+							<td class="alignLeft"><%= pessoa.getEndereco().getLogradouro() %></td>
+							<td class="alignLeft"><%= pessoa.getEndereco().getCidade().getDescricao() %></td>
+							<td class="alignLeft"><%= pessoa.getEndereco().getCidade().getUf().getDescricao() %></td>
 							<td class="alignCenter">
 								<a href="" title="Editar">
 									<img alt="Edição de Pessoa" src="img/edit.png"/>
