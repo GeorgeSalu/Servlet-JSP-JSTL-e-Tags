@@ -32,7 +32,7 @@
 							<th>Endereço</th>
 							<th>Cidade</th>
 							<th>UF</th>
-							<th colspan="2">Ações</th>
+							<th colspan="3">Ações</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -49,6 +49,11 @@
 							<td class="alignLeft"><%= pessoa.getEndereco().getLogradouro() %></td>
 							<td class="alignLeft"><%= pessoa.getEndereco().getCidade().getDescricao() %></td>
 							<td class="alignLeft"><%= pessoa.getEndereco().getCidade().getUf().getDescricao() %></td>
+							<td class="alignCenter">
+								<a href="javascript:void(0)" title="Preferências" onclick="">
+									<img alt="Preferências" src="img/preference.png"/>
+								</a>
+							</td>
 							<td class="alignCenter">
 								<a href="" title="Editar">
 									<img alt="Edição de Pessoa" src="img/edit.png"/>

@@ -323,6 +323,8 @@ public class PessoaDAO {
 				cidadeDTO.setUf(ufDTO);
 				pessoaDTO.setEndereco(enderecoDTO);
 
+				pessoaDTO.setPreferencias(consultarPreferencias(pessoaDTO.getIdPessoa()));
+				
 				listaPessoas.add(pessoaDTO);
 			}
 		} catch (ClassNotFoundException | SQLException e) {
@@ -336,6 +338,51 @@ public class PessoaDAO {
 		}
 
 		return listaPessoas;
+	}
+	
+	/**
+	 * Método de busca de todas as preferências musicais atreladas a um único id
+	 * da pessoa.
+	 * 
+	 * @param idPessoa
+	 * @return
+	 * @throws PersistenciaException
+	 */
+	public List<PreferenciaMusicalDTO> consultarPreferencias(Integer idPessoa) throws PersistenciaException {
+		List<PreferenciaMusicalDTO> listaPreferencias = new ArrayList<>();
+		
+		Connection conexao = null;
+		try {
+			conexao = ConexaoUtil.getConexao();
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT PRE.ID_PREFERENCIA, PRE.DESCRICAO FROM TB_PREFERENCIA PRE");
+			sql.append("	INNER JOIN TB_PREFERENCIA_PESSOA PREPES");
+			sql.append("		ON PRE.ID_PREFERENCIA = PREPES.COD_PREFERENCIA");
+			sql.append("	INNER JOIN TB_PESSOA PES");
+			sql.append("		ON PES.ID_PESSOA = PREPES.COD_PESSOA");
+			sql.append(" WHERE PES.ID_PESSOA = ?");
+			
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			
+			ResultSet resultSet = statement.getResultSet();
+			while (resultSet.next()) {
+				PreferenciaMusicalDTO preferenciaMusical = new PreferenciaMusicalDTO();
+				preferenciaMusical.setIdPreferencia(resultSet.getInt("id_preferencia"));
+				preferenciaMusical.setDescricao(resultSet.getString("descricao"));
+				
+				listaPreferencias.add(preferenciaMusical);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new PersistenciaException(e);
+		} finally {
+			try {
+				conexao.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return listaPreferencias;
 	}
 
 	/**
@@ -396,5 +443,4 @@ public class PessoaDAO {
 			}
 		}
 	}
-	
 }
