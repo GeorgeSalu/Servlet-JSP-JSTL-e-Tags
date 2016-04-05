@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,7 +12,7 @@
 	<jsp:include page="cabecalho.jsp"/>
 	
 	<div class="main">
-		<h1>Alguma exceção inesperada aconteceu... :(</h1>
+		<h1>Alguma exceÃ§Ã£o inesperada aconteceu... :(</h1>
 		<fieldset>
 			<legend>Dica</legend> 
 			

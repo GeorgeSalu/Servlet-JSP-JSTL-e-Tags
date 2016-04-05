@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,11 +12,11 @@
 	<jsp:include page="cabecalho.jsp"/>
 	
 	<div class="main">
-		<h1>Ol·, seja bem vindo ao CRUD - DevMedia</h1>
+		<h1>Ol√°, seja bem vindo ao CRUD - DevMedia</h1>
 		<fieldset>
 			<legend>CRUD DevMedia</legend> 
 			
-			<h4>Esse È um sistema CRUD de cadastros, consultas e operaÁıes b·sicas em torno dos nossos clientes.</h4>
+			<h4>Esse √© um sistema CRUD de cadastros, consultas e opera√ß√µes b√°sicas em torno dos nossos clientes.</h4>
 		</fieldset>
 	</div>
 	
