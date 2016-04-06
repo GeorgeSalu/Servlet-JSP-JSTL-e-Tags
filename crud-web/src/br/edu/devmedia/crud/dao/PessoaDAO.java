@@ -364,8 +364,9 @@ public class PessoaDAO {
 			sql.append(" WHERE PES.ID_PESSOA = ?");
 			
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			statement.setInt(1, idPessoa);
 			
-			ResultSet resultSet = statement.getResultSet();
+			ResultSet resultSet = statement.executeQuery();
 			while (resultSet.next()) {
 				PreferenciaMusicalDTO preferenciaMusical = new PreferenciaMusicalDTO();
 				preferenciaMusical.setIdPreferencia(resultSet.getInt("id_preferencia"));
@@ -394,6 +395,7 @@ public class PessoaDAO {
 	public void removerPessoa(PessoaDTO pessoaDTO) throws PersistenciaException {
 		Connection conexao = null;
 		try {
+			removerPreferencias(pessoaDTO.getIdPessoa(), pessoaDTO.getPreferencias());
 			removerEndereco(pessoaDTO.getEndereco().getIdEndereco());
 			conexao = ConexaoUtil.getConexao();
 			
@@ -433,6 +435,39 @@ public class PessoaDAO {
 			statement.setInt(1, idEndereco);
 			
 			statement.execute();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new PersistenciaException(e);
+		} finally {
+			try {
+				conexao.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Método que remove a lista de preferências passada em relação ao id da
+	 * pessoa
+	 * 
+	 * @param idPessoa
+	 * @param preferencias
+	 * @throws PersistenciaException
+	 */
+	public void removerPreferencias(Integer idPessoa, List<PreferenciaMusicalDTO> preferencias) throws PersistenciaException {
+		Connection conexao = null;
+		try {
+			conexao = ConexaoUtil.getConexao();
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("DELETE FROM TB_PREFERENCIA_PESSOA WHERE COD_PREFERENCIA = ? AND COD_PESSOA = ?");
+			
+			for (PreferenciaMusicalDTO preferencia : preferencias) {
+				PreparedStatement statement = conexao.prepareStatement(sql.toString());
+				statement.setInt(preferencia.getIdPreferencia(), idPessoa);
+				
+				statement.execute();
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			throw new PersistenciaException(e);
 		} finally {

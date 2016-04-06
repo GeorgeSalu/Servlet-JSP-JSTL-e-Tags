@@ -1,7 +1,8 @@
+<%@page import="br.edu.devmedia.crud.dto.PreferenciaMusicalDTO"%>
 <%@page import="br.edu.devmedia.crud.dto.PessoaDTO"%>
 <%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -29,10 +30,10 @@
 							<th>Sexo</th>
 							<th>CPF</th>
 							<th>Dt. Nasc.</th>
-							<th>EndereÃ§o</th>
+							<th>Endereço</th>
 							<th>Cidade</th>
 							<th>UF</th>
-							<th colspan="3">AÃ§Ãµes</th>
+							<th colspan="3">Ações</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -50,18 +51,24 @@
 							<td class="alignLeft"><%= pessoa.getEndereco().getCidade().getDescricao() %></td>
 							<td class="alignLeft"><%= pessoa.getEndereco().getCidade().getUf().getDescricao() %></td>
 							<td class="alignCenter">
-								<a href="javascript:void(0)" title="PreferÃªncias" onclick="">
-									<img alt="PreferÃªncias" src="img/preference.png"/>
+								<%
+									String preferencias = "";
+									for (PreferenciaMusicalDTO preferencia : pessoa.getPreferencias()) {
+										preferencias += "[" + preferencia.getDescricao() + "] ";
+									}
+								%>
+								<a href="javascript:void(0)" title="Preferências" onclick="alert('<%=preferencias%>');">
+									<img alt="Preferências" src="img/preference.png"/>
 								</a>
 							</td>
 							<td class="alignCenter">
 								<a href="" title="Editar">
-									<img alt="EdiÃ§Ã£o de Pessoa" src="img/edit.png"/>
+									<img alt="Edição de Pessoa" src="img/edit.png"/>
 								</a>
 							</td>
 							<td class="alignCenter">
 								<a href="" title="Deletar">
-									<img alt="RemoÃ§Ã£o de Pessoa" src="img/delete.png"/>
+									<img alt="Remoção de Pessoa" src="img/delete.png"/>
 								</a>
 							</td>
 						</tr>
