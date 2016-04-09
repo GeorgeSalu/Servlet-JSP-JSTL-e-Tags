@@ -21,7 +21,7 @@ import br.edu.devmedia.crud.validator.DataValidator;
  */
 public class PessoaBO {
 
-private PessoaDAO pessoaDAO;
+	private PessoaDAO pessoaDAO;
 	
 	public PessoaBO() {
 		pessoaDAO = new PessoaDAO();
@@ -145,5 +145,4 @@ private PessoaDAO pessoaDAO;
 			throw new NegocioException(e);
 		}
 	}
-
 }

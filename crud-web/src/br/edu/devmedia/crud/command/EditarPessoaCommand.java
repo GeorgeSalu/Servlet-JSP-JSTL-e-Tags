@@ -13,7 +13,7 @@ import br.edu.devmedia.crud.exception.PersistenciaException;
 
 public class EditarPessoaCommand implements Command {
 
-private String proximo;
+	private String proximo;
 	
 	private PessoaBO pessoaBO;
 
@@ -37,5 +37,6 @@ private String proximo;
 		
 		return proximo;
 	}
+
 
 }
