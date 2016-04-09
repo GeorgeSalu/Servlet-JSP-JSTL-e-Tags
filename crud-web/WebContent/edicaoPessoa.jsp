@@ -72,16 +72,14 @@
 									if (preferencias != null) {
 										for (PreferenciaMusicalDTO preferencia : preferencias) {
 								%>
-									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>"
+									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>">
 										<%
 											if (pessoaDTO != null) {
-										%> 
-										<%= idsPrefs.contains(preferencia.getIdPreferencia()) ? "checked" : "" %>/>
-										<%
+												out.print(idsPrefs.contains(preferencia.getIdPreferencia()) ? "checked />" : "/>");
 											} else {
+												out.print(paramPrefs != null && Arrays.asList(paramPrefs).contains(String.valueOf(preferencia.getIdPreferencia())) ? "checked  />" : " />");
+											}
 										%>
-										<%= paramPrefs != null && Arrays.asList(paramPrefs).contains(String.valueOf(preferencia.getIdPreferencia())) ? "checked" : "" %>/>
-										<%  } %>
 									<%= preferencia.getDescricao() %>
 								<%
 										}
@@ -92,7 +90,7 @@
 						<tr>
 							<td>Mini-biografia:</td>
 							<td>
-								<textarea rows="5" cols="35" name="miniBio">${pessoa.miniBio}</textarea>
+								<textarea rows="5" cols="35" name="miniBio">${pessoa != null ? pessoa.miniBio : param.miniBio}</textarea>
 							</td>
 						</tr>
 					</table>
@@ -113,9 +111,13 @@
 											ufDTO = pessoaDTO.getEndereco().getCidade().getUf();
 										for (UfDTO uf : listaUF) {
 									%>
-										<option value="<%=uf.getIdUF()%>" 
+										<option value="<%=uf.getIdUF()%>"
+											<% if (ufDTO != null) { %> 
 											<%= ufDTO != null && uf.getIdUF().equals(ufDTO.getIdUF()) ? "selected='selected'" : "" %>>
-												<%=uf.getDescricao()%></option>
+											<% } else { %>
+											<%= request.getParameter("uf") != null && String.valueOf(uf.getIdUF()).equals(request.getParameter("uf")) ? "selected='selected'" : "" %>>
+											<% } %>
+											<%=uf.getDescricao()%></option>
 									<%
 										}
 									%>
@@ -149,7 +151,7 @@
 							<tr>
 								<td>Logradouro*:</td>
 								<td>
-									<input type="text" name="logradouro" value="${pessoa.endereco.logradouro}"/>
+									<input type="text" name="logradouro" value="${pessoa != null ? pessoa.endereco.logradouro : param.logradouro}"/>
 								</td>
 							</tr>
 						</table>

@@ -276,6 +276,42 @@ public class PessoaDAO {
 	}
 
 	/**
+	 * Método responsável por atualizar as informações das pessoas.
+	 * 
+	 * @param pessoaDTO
+	 * @throws PersistenciaException
+	 */
+	public void atualizarPessoa(PessoaDTO pessoaDTO) throws PersistenciaException {
+		Connection conexao = null;
+		try {
+			conexao = ConexaoUtil.getConexao();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE TB_PESSOA ");
+			sql.append(" SET NOME = ?, CPF = ?, DT_NASC = ?, SEXO = ?, MINI_BIO = ?");
+			sql.append(" WHERE ID_PESSOA = ?");
+			
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			statement.setString(1, pessoaDTO.getNome());
+			statement.setString(2, pessoaDTO.getCpf());
+			statement.setString(3, pessoaDTO.getDtNasc());
+			statement.setString(4, String.valueOf(pessoaDTO.getSexo()));
+			statement.setString(5, pessoaDTO.getMiniBio());
+			statement.setInt(6, pessoaDTO.getIdPessoa());
+			
+			statement.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new PersistenciaException(e);
+		} finally {
+			try {
+				conexao.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
 	 * Método de consulta de todas as entidades de pessoas e suas respectivas
 	 * dependências.
 	 * 
