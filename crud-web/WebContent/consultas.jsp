@@ -62,7 +62,7 @@
 								</a>
 							</td>
 							<td class="alignCenter">
-								<a href="" title="Editar">
+								<a href="main?acao=editarPessoa&id_pessoa=<%= pessoa.getIdPessoa() %>" title="Editar">
 									<img alt="Edição de Pessoa" src="img/edit.png"/>
 								</a>
 							</td>
