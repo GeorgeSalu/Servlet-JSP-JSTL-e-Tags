@@ -355,7 +355,8 @@ public class PessoaDAO {
 
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT PE.ID_PESSOA, PE.NOME, PE.CPF, PE.DT_NASC, PE.SEXO,");
-			sql.append("	EN.LOGRADOURO, CID.DESCRICAO AS DESC_CID, UF.DESCRICAO AS DESC_UF");
+			sql.append("	EN.ID_ENDERECO, EN.LOGRADOURO, PE.MINI_BIO, CID.ID_CIDADE, CID.DESCRICAO AS DESC_CID, ");
+			sql.append("	UF.ID_UF, UF.DESCRICAO AS DESC_UF");
 			sql.append(" FROM TB_PESSOA PE");
 			sql.append(" INNER JOIN TB_ENDERECO EN");
 			sql.append("	ON PE.COD_ENDERECO = EN.ID_ENDERECO");
@@ -373,16 +374,20 @@ public class PessoaDAO {
 				pessoaDTO.setIdPessoa(resultSet.getInt("id_pessoa"));
 				pessoaDTO.setNome(resultSet.getString("nome"));
 				pessoaDTO.setCpf(resultSet.getString("cpf"));
+				pessoaDTO.setMiniBio(resultSet.getString("mini_bio"));
 				pessoaDTO.setSexo(resultSet.getString("sexo").charAt(0));
 				pessoaDTO.setDtNasc(dateFormat.format(resultSet.getDate("dt_nasc")));
 
 				EnderecoDTO enderecoDTO = new EnderecoDTO();
+				enderecoDTO.setIdEndereco(resultSet.getInt("id_endereco"));
 				enderecoDTO.setLogradouro(resultSet.getString("logradouro"));
 
 				CidadeDTO cidadeDTO = new CidadeDTO();
+				cidadeDTO.setIdCidade(resultSet.getInt("id_cidade"));
 				cidadeDTO.setDescricao(resultSet.getString("desc_cid"));
 
 				UfDTO ufDTO = new UfDTO();
+				ufDTO.setIdUF(resultSet.getInt("id_uf"));
 				ufDTO.setDescricao(resultSet.getString("desc_uf")); 
 
 				enderecoDTO.setCidade(cidadeDTO);

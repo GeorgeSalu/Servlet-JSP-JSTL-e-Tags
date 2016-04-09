@@ -1,3 +1,4 @@
+<%@page import="br.edu.devmedia.crud.dto.PessoaDTO"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="br.edu.devmedia.crud.dto.PreferenciaMusicalDTO"%>
 <%@page import="br.edu.devmedia.crud.dto.UfDTO"%>
@@ -44,28 +45,29 @@
 						</tr>
 						<tr>
 							<td>CPF*:</td>
-							<td><input type="text" name="cpf" maxlength="11" value="${param.cpf}"/></td>
+							<td><input type="text" name="cpf" maxlength="11" value="${pessoa.cpf}"/></td>
 						</tr>
 						<tr>
 							<td>Data Nascimento:</td>
-							<td><input type="text" name="dtNasc" maxlength="10" value="${param.dtNasc}"/></td>
+							<td><input type="text" name="dtNasc" maxlength="10" value="${pessoa.dtNasc}"/></td>
 						</tr>
 						<tr>
 							<td>Sexo*:</td>
-							<td><input type="radio" name="sexo" value="M" <%= "M".equals(request.getParameter("sexo")) ? "checked" : "" %>/> Masculino
-							<input type="radio" name="sexo" value="F" <%= "F".equals(request.getParameter("sexo")) ? "checked" : "" %>/> Feminino</td>
+							<td><input type="radio" name="sexo" value="M" ${'M' eq pessoa.sexo.toString() ? 'checked' : ''}/> Masculino
+							<input type="radio" name="sexo" value="F" ${'F' eq pessoa.sexo.toString() ? 'checked' : ''}/> Feminino</td>
 						</tr>
 						<tr>
 							<td>Preferências:</td>
 							<td>
 								<%
 									List<PreferenciaMusicalDTO> preferencias = (List<PreferenciaMusicalDTO>) session.getAttribute("listaPreferencias");
-									String[] paramPrefs = request.getParameterValues("gostos");
+									PessoaDTO pessoaDTO = (PessoaDTO) request.getAttribute("pessoa");
+									List<PreferenciaMusicalDTO> paramPrefs = pessoaDTO.getPreferencias();
 									if (preferencias != null) {
 										for (PreferenciaMusicalDTO preferencia : preferencias) {
 								%>
 									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>" 
-										<%= paramPrefs != null && Arrays.asList(paramPrefs).contains(String.valueOf(preferencia.getIdPreferencia())) ? "checked" : "" %>/>
+										<%= paramPrefs != null && paramPrefs.contains(String.valueOf(preferencia.getIdPreferencia())) ? "checked" : "" %>/>
 									<%= preferencia.getDescricao() %>
 								<%
 										}
@@ -76,7 +78,7 @@
 						<tr>
 							<td>Mini-biografia:</td>
 							<td>
-								<textarea rows="5" cols="35" name="miniBio">${param.miniBio}</textarea>
+								<textarea rows="5" cols="35" name="miniBio">${pessoa.miniBio}</textarea>
 							</td>
 						</tr>
 					</table>
@@ -92,10 +94,11 @@
 										<option value="0">Selecione...</option>
 									<%
 										List<UfDTO> listaUF = (List<UfDTO>) session.getAttribute("listaUF");
+										UfDTO ufDTO = pessoaDTO.getEndereco().getCidade().getUf();
 										for (UfDTO uf : listaUF) {
 									%>
 										<option value="<%=uf.getIdUF()%>" 
-											<%= request.getParameter("uf") != null && String.valueOf(uf.getIdUF()).equals(request.getParameter("uf")) ? "selected='selected'" : "" %>>
+											<%= ufDTO != null && uf.getIdUF().equals(ufDTO.getIdUF()) ? "selected='selected'" : "" %>>
 												<%=uf.getDescricao()%></option>
 									<%
 										}
@@ -110,11 +113,12 @@
 										<option value="0">Selecione...</option>
 									<%
 										List<CidadeDTO> listaCidades = (List<CidadeDTO>) request.getAttribute("listaCidades");
+										CidadeDTO cidadeDTO = pessoaDTO.getEndereco().getCidade();
 										if (listaCidades != null) {
 											for (CidadeDTO cidade : listaCidades) {
 									%>
 										<option value="<%= cidade.getIdCidade() %>"
-											<%= request.getParameter("cidade") != null && String.valueOf(cidade.getIdCidade()).equals(request.getParameter("cidade")) ? "selected='selected'" : "" %>>
+											<%= cidadeDTO != null && cidade.getIdCidade().equals(cidadeDTO.getIdCidade()) ? "selected='selected'" : "" %>>
 											<%= cidade.getDescricao() %>
 										</option>
 									<%
@@ -127,7 +131,7 @@
 							<tr>
 								<td>Logradouro*:</td>
 								<td>
-									<input type="text" name="logradouro" value="${param.logradouro}"/>
+									<input type="text" name="logradouro" value="${pessoa.endereco.logradouro}"/>
 								</td>
 							</tr>
 						</table>
