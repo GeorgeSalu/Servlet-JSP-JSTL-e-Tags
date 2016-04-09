@@ -114,5 +114,20 @@ public class PessoaBO {
 		}
 		return listaPessoas;
 	}
+	
+	/**
+	 * Método de remoção da pessoaDTO passada por parâmetro.
+	 * 
+	 * @param idPessoa
+	 * @throws NegocioException
+	 */
+	public void removerPessoa(Integer idPessoa) throws NegocioException {
+		try {
+			pessoaDAO.removerPessoa(idPessoa);
+		} catch (PersistenciaException e) {
+			e.printStackTrace();
+			throw new NegocioException(e);
+		}
+	}
 
 }

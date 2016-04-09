@@ -341,6 +341,69 @@ public class PessoaDAO {
 	}
 	
 	/**
+	 * Método de consulta de uma pessoa pelo seu id.
+	 * 
+	 * @param idPessoa
+	 * @return
+	 * @throws PersistenciaException
+	 */
+	public PessoaDTO consultarPessoaPorId(Integer idPessoa) throws PersistenciaException {
+		PessoaDTO pessoaDTO = null;
+		Connection conexao = null;
+		try {
+			conexao = ConexaoUtil.getConexao();
+
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT PE.ID_PESSOA, PE.NOME, PE.CPF, PE.DT_NASC, PE.SEXO,");
+			sql.append("	EN.LOGRADOURO, CID.DESCRICAO AS DESC_CID, UF.DESCRICAO AS DESC_UF");
+			sql.append(" FROM TB_PESSOA PE");
+			sql.append(" INNER JOIN TB_ENDERECO EN");
+			sql.append("	ON PE.COD_ENDERECO = EN.ID_ENDERECO");
+			sql.append("		INNER JOIN TB_CIDADE CID");
+			sql.append("			ON EN.COD_CIDADE = CID.ID_CIDADE");
+			sql.append("		INNER JOIN TB_UF UF");
+			sql.append("			ON CID.COD_ESTADO = UF.ID_UF");
+			sql.append(" WHERE ID_PESSOA = ?");
+
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			statement.setInt(1, idPessoa);
+			ResultSet resultSet = statement.executeQuery();
+			if (resultSet.first()) {
+				pessoaDTO = new PessoaDTO();
+				pessoaDTO.setIdPessoa(resultSet.getInt("id_pessoa"));
+				pessoaDTO.setNome(resultSet.getString("nome"));
+				pessoaDTO.setCpf(resultSet.getString("cpf"));
+				pessoaDTO.setSexo(resultSet.getString("sexo").charAt(0));
+				pessoaDTO.setDtNasc(dateFormat.format(resultSet.getDate("dt_nasc")));
+
+				EnderecoDTO enderecoDTO = new EnderecoDTO();
+				enderecoDTO.setLogradouro(resultSet.getString("logradouro"));
+
+				CidadeDTO cidadeDTO = new CidadeDTO();
+				cidadeDTO.setDescricao(resultSet.getString("desc_cid"));
+
+				UfDTO ufDTO = new UfDTO();
+				ufDTO.setDescricao(resultSet.getString("desc_uf")); 
+
+				enderecoDTO.setCidade(cidadeDTO);
+				cidadeDTO.setUf(ufDTO);
+				pessoaDTO.setEndereco(enderecoDTO);
+
+				pessoaDTO.setPreferencias(consultarPreferencias(pessoaDTO.getIdPessoa()));
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new PersistenciaException(e);
+		} finally {
+			try {
+				conexao.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return pessoaDTO;
+	}
+	
+	/**
 	 * Método de busca de todas as preferências musicais atreladas a um único id
 	 * da pessoa.
 	 * 
@@ -389,14 +452,20 @@ public class PessoaDAO {
 	/**
 	 * Método de remoção de uma pessoa a partir do seu id.
 	 * 
-	 * @param pessoaDTO
+	 * @param idPessoa
 	 * @throws PersistenciaException
 	 */
-	public void removerPessoa(PessoaDTO pessoaDTO) throws PersistenciaException {
+	public void removerPessoa(Integer idPessoa) throws PersistenciaException {
 		Connection conexao = null;
 		try {
-			removerPreferencias(pessoaDTO.getIdPessoa(), pessoaDTO.getPreferencias());
-			removerEndereco(pessoaDTO.getEndereco().getIdEndereco());
+			PessoaDTO pessoaDTO = consultarPessoaPorId(idPessoa);
+			
+			if (pessoaDTO.getPreferencias() != null && !pessoaDTO.getPreferencias().isEmpty()) {
+				removerPreferencias(pessoaDTO.getIdPessoa(), pessoaDTO.getPreferencias());
+			}
+			if (pessoaDTO.getEndereco() != null && pessoaDTO.getEndereco().getIdEndereco() != null) {
+				removerEndereco(pessoaDTO.getEndereco().getIdEndereco());
+			}
 			conexao = ConexaoUtil.getConexao();
 			
 			StringBuilder sql = new StringBuilder();
@@ -464,7 +533,8 @@ public class PessoaDAO {
 			
 			for (PreferenciaMusicalDTO preferencia : preferencias) {
 				PreparedStatement statement = conexao.prepareStatement(sql.toString());
-				statement.setInt(preferencia.getIdPreferencia(), idPessoa);
+				statement.setInt(1, preferencia.getIdPreferencia());
+				statement.setInt(2, idPessoa);
 				
 				statement.execute();
 			}

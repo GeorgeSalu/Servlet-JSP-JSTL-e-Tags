@@ -67,7 +67,7 @@
 								</a>
 							</td>
 							<td class="alignCenter">
-								<a href="" title="Deletar">
+								<a href="main?acao=removerPessoa&id_pessoa=<%= pessoa.getIdPessoa() %>" title="Deletar">
 									<img alt="Remoção de Pessoa" src="img/delete.png"/>
 								</a>
 							</td>
