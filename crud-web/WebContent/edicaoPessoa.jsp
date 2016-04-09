@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="br.edu.devmedia.crud.dto.PessoaDTO"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="br.edu.devmedia.crud.dto.PreferenciaMusicalDTO"%>
@@ -41,20 +42,20 @@
 					<table cellpadding="5">
 						<tr>
 							<td>Nome*:</td>
-							<td><input type="text" name="nome" maxlength="45" value="${pessoa.nome}"/></td>
+							<td><input type="text" name="nome" maxlength="45" value="${pessoa != null ? pessoa.nome : param.nome}"/></td>
 						</tr>
 						<tr>
 							<td>CPF*:</td>
-							<td><input type="text" name="cpf" maxlength="11" value="${pessoa.cpf}"/></td>
+							<td><input type="text" name="cpf" maxlength="11" value="${pessoa != null ? pessoa.cpf : param.cpf}"/></td>
 						</tr>
 						<tr>
 							<td>Data Nascimento:</td>
-							<td><input type="text" name="dtNasc" maxlength="10" value="${pessoa.dtNasc}"/></td>
+							<td><input type="text" name="dtNasc" maxlength="10" value="${pessoa != null ? pessoa.dtNasc : param.dtNasc}"/></td>
 						</tr>
 						<tr>
 							<td>Sexo*:</td>
-							<td><input type="radio" name="sexo" value="M" ${'M' eq pessoa.sexo.toString() ? 'checked' : ''}/> Masculino
-							<input type="radio" name="sexo" value="F" ${'F' eq pessoa.sexo.toString() ? 'checked' : ''}/> Feminino</td>
+							<td><input type="radio" name="sexo" value="M" ${'M' eq (pessoa != null ? pessoa.sexo.toString() : param.sexo) ? 'checked' : ''}/> Masculino
+							<input type="radio" name="sexo" value="F" ${'F' eq (pessoa != null ? pessoa.sexo.toString() : param.sexo) ? 'checked' : ''}/> Feminino</td>
 						</tr>
 						<tr>
 							<td>Preferências:</td>
@@ -62,12 +63,25 @@
 								<%
 									List<PreferenciaMusicalDTO> preferencias = (List<PreferenciaMusicalDTO>) session.getAttribute("listaPreferencias");
 									PessoaDTO pessoaDTO = (PessoaDTO) request.getAttribute("pessoa");
-									List<PreferenciaMusicalDTO> paramPrefs = pessoaDTO.getPreferencias();
+									String[] paramPrefs = request.getParameterValues("gostos");
+									List<Integer> idsPrefs = new ArrayList<Integer>();
+									if (pessoaDTO != null && pessoaDTO.getPreferencias() != null)
+										for (PreferenciaMusicalDTO p : pessoaDTO.getPreferencias()) {
+											idsPrefs.add(p.getIdPreferencia());
+										}
 									if (preferencias != null) {
 										for (PreferenciaMusicalDTO preferencia : preferencias) {
 								%>
-									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>" 
-										<%= paramPrefs != null && paramPrefs.contains(String.valueOf(preferencia.getIdPreferencia())) ? "checked" : "" %>/>
+									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>"
+										<%
+											if (pessoaDTO != null) {
+										%> 
+										<%= idsPrefs.contains(preferencia.getIdPreferencia()) ? "checked" : "" %>/>
+										<%
+											} else {
+										%>
+										<%= paramPrefs != null && Arrays.asList(paramPrefs).contains(String.valueOf(preferencia.getIdPreferencia())) ? "checked" : "" %>/>
+										<%  } %>
 									<%= preferencia.getDescricao() %>
 								<%
 										}
@@ -94,7 +108,9 @@
 										<option value="0">Selecione...</option>
 									<%
 										List<UfDTO> listaUF = (List<UfDTO>) session.getAttribute("listaUF");
-										UfDTO ufDTO = pessoaDTO.getEndereco().getCidade().getUf();
+										UfDTO ufDTO = null;
+										if (pessoaDTO != null) 
+											ufDTO = pessoaDTO.getEndereco().getCidade().getUf();
 										for (UfDTO uf : listaUF) {
 									%>
 										<option value="<%=uf.getIdUF()%>" 
@@ -113,7 +129,9 @@
 										<option value="0">Selecione...</option>
 									<%
 										List<CidadeDTO> listaCidades = (List<CidadeDTO>) request.getAttribute("listaCidades");
-										CidadeDTO cidadeDTO = pessoaDTO.getEndereco().getCidade();
+										CidadeDTO cidadeDTO = null;
+										if (pessoaDTO != null)
+											cidadeDTO = pessoaDTO.getEndereco().getCidade();
 										if (listaCidades != null) {
 											for (CidadeDTO cidade : listaCidades) {
 									%>
