@@ -39,6 +39,7 @@
 				<fieldset>
 					<legend>Atualização de Pessoa</legend>
 					 
+					 <input type="hidden" value="${pessoa != null ? pessoa.idPessoa : param.id_pessoa}" name="id_pessoa"/>
 					<table cellpadding="5">
 						<tr>
 							<td>Nome*:</td>

@@ -21,7 +21,7 @@ import br.edu.devmedia.crud.validator.DataValidator;
  */
 public class PessoaBO {
 
-	private PessoaDAO pessoaDAO;
+private PessoaDAO pessoaDAO;
 	
 	public PessoaBO() {
 		pessoaDAO = new PessoaDAO();
@@ -124,6 +124,21 @@ public class PessoaBO {
 	public void removerPessoa(Integer idPessoa) throws NegocioException {
 		try {
 			pessoaDAO.removerPessoa(idPessoa);
+		} catch (PersistenciaException e) {
+			e.printStackTrace();
+			throw new NegocioException(e);
+		}
+	}
+	
+	/**
+	 * Método de atualização das pessoas.
+	 * 
+	 * @param pessoaDTO
+	 * @throws NegocioException
+	 */
+	public void atualizarPessoa(PessoaDTO pessoaDTO) throws NegocioException {
+		try {
+			pessoaDAO.atualizarPessoa(pessoaDTO);
 		} catch (PersistenciaException e) {
 			e.printStackTrace();
 			throw new NegocioException(e);
