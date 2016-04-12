@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.edu.devmedia.crud.dto.CidadeDTO;
@@ -294,7 +295,10 @@ public class PessoaDAO {
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
 			statement.setString(1, pessoaDTO.getNome());
 			statement.setString(2, pessoaDTO.getCpf());
-			statement.setString(3, pessoaDTO.getDtNasc());
+			
+			Date dtNasc = new SimpleDateFormat("dd/MM/yyyy").parse(pessoaDTO.getDtNasc());
+			
+			statement.setDate(3, new java.sql.Date(dtNasc.getTime()));
 			statement.setString(4, String.valueOf(pessoaDTO.getSexo()));
 			statement.setString(5, pessoaDTO.getMiniBio());
 			statement.setInt(6, pessoaDTO.getIdPessoa());
@@ -305,7 +309,7 @@ public class PessoaDAO {
 			cadastrarPreferencias(pessoaDTO.getPreferencias(), pessoaDTO.getIdPessoa());
 			
 			atualizarEndereco(pessoaDTO.getEndereco());
-		} catch (ClassNotFoundException | SQLException e) {
+		} catch (ParseException | ClassNotFoundException | SQLException e) {
 			throw new PersistenciaException(e);
 		} finally {
 			try {

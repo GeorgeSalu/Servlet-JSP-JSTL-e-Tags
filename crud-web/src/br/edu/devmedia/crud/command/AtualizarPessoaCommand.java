@@ -11,17 +11,17 @@ import br.edu.devmedia.crud.dto.EnderecoDTO;
 import br.edu.devmedia.crud.dto.PessoaDTO;
 import br.edu.devmedia.crud.dto.PreferenciaMusicalDTO;
 import br.edu.devmedia.crud.dto.UfDTO;
-import br.edu.devmedia.crud.exception.NegocioException;
 import br.edu.devmedia.crud.util.MensagemContantes;
 
 public class AtualizarPessoaCommand implements Command {
 
-private String proximo;
+	private String proximo;
 	
 	private PessoaBO pessoaBO;
-
+	
 	public String execute(HttpServletRequest request) {
 		String idPessoa = request.getParameter("id_pessoa");
+		String idEndereco = request.getParameter("id_endereco");
 		proximo = "main?acao=editarPessoa&id_pessoa=" + idPessoa;
 		pessoaBO = new PessoaBO();
 		
@@ -46,6 +46,7 @@ private String proximo;
 		}
 		try {
 			PessoaDTO pessoaDTO = new PessoaDTO();
+			pessoaDTO.setIdPessoa(Integer.parseInt(idPessoa));
 			pessoaDTO.setNome(nome);
 			pessoaDTO.setCpf(cpf);
 			pessoaDTO.setDtNasc(dtNasc);
@@ -54,6 +55,7 @@ private String proximo;
 			pessoaDTO.setPreferencias(listaPrefs);
 			
 			EnderecoDTO enderecoDTO = new EnderecoDTO();
+			enderecoDTO.setIdEndereco(Integer.parseInt(idEndereco));
 			enderecoDTO.setLogradouro(logradouro);
 			
 			CidadeDTO cidadeDTO = new CidadeDTO();

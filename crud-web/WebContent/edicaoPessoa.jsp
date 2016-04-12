@@ -73,15 +73,16 @@
 									if (preferencias != null) {
 										for (PreferenciaMusicalDTO preferencia : preferencias) {
 								%>
-									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>">
+									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>"
 										<%
 											if (pessoaDTO != null) {
-												out.print(idsPrefs.contains(preferencia.getIdPreferencia()) ? "checked />" : "/>");
+												out.print(idsPrefs.contains(preferencia.getIdPreferencia()) ? "checked" : "");
 											} else {
-												out.print(paramPrefs != null && Arrays.asList(paramPrefs).contains(String.valueOf(preferencia.getIdPreferencia())) ? "checked  />" : " />");
+												out.print(paramPrefs != null && Arrays.asList(paramPrefs).contains(String.valueOf(preferencia.getIdPreferencia())) ? "checked" : "");
 											}
 										%>
 									<%= preferencia.getDescricao() %>
+									/>
 								<%
 										}
 									}
@@ -152,6 +153,7 @@
 							<tr>
 								<td>Logradouro*:</td>
 								<td>
+									<input type="hidden" name="id_endereco" value="${pessoa != null ? pessoa.endereco.idEndereco : param.id_endereco}"/>
 									<input type="text" name="logradouro" value="${pessoa != null ? pessoa.endereco.logradouro : param.logradouro}"/>
 								</td>
 							</tr>
