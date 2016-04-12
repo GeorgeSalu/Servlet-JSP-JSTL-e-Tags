@@ -15,7 +15,7 @@ import br.edu.devmedia.crud.util.MensagemContantes;
 
 public class CadastroPessoaCommand implements Command {
 	
-	private String proximo;
+private String proximo;
 	
 	private PessoaBO pessoaBO;
 	
@@ -73,6 +73,8 @@ public class CadastroPessoaCommand implements Command {
 				request.setAttribute("msgSucesso", MensagemContantes.MSG_SUC_CADASTRO_PESSOA);
 			}
 		} catch (Exception e) {
+			String idEstado = request.getParameter("uf");
+			proximo = "main?acao=montagemCadastro&getCidades=true&idEstado=" + idEstado;
 			request.setAttribute("msgErro", e.getMessage());
 		}
 		

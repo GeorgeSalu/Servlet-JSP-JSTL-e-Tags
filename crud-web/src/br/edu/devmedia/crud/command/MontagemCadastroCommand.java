@@ -12,14 +12,18 @@ import br.edu.devmedia.crud.exception.PersistenciaException;
 
 public class MontagemCadastroCommand implements Command {
 	
-
 	private String proximo;
 	
 	private PessoaDAO cadastroDAO;
 	
 	public String execute(HttpServletRequest request) {
 		cadastroDAO = new PessoaDAO();
-		proximo = "cadastroPessoa.jsp";
+		String isEdit = request.getParameter("isEdit");
+		if (isEdit != null && !"".equals(isEdit)) {
+			proximo = "edicaoPessoa.jsp";
+		} else {
+			proximo = "cadastroPessoa.jsp";
+		}
 		String getCidades = request.getParameter("getCidades");
 		
 		try {
@@ -40,6 +44,5 @@ public class MontagemCadastroCommand implements Command {
 		}
 		
 		return proximo;
-	}
-	
+	}	
 }

@@ -3,8 +3,8 @@
 <%@page import="br.edu.devmedia.crud.dto.UfDTO"%>
 <%@page import="br.edu.devmedia.crud.dto.CidadeDTO"%>
 <%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -56,7 +56,7 @@
 							<input type="radio" name="sexo" value="F" <%= "F".equals(request.getParameter("sexo")) ? "checked" : "" %>/> Feminino</td>
 						</tr>
 						<tr>
-							<td>PreferÃªncias:</td>
+							<td>Preferências:</td>
 							<td>
 								<%
 									List<PreferenciaMusicalDTO> preferencias = (List<PreferenciaMusicalDTO>) session.getAttribute("listaPreferencias");
@@ -82,7 +82,7 @@
 					</table>
 					
 					<fieldset>
-						<legend>EndereÃ§o</legend>
+						<legend>Endereço</legend>
 						
 						<table cellpadding="5">
 							<tr>
@@ -133,7 +133,7 @@
 						</table>
 					</fieldset>
 				</fieldset>
-				<span>* Campos obrigatÃ³rios</span>
+				<span>* Campos obrigatórios</span>
 				<input type="reset" value="Limpar"/>
 				<input type="button" value="Cadastrar" onclick="cadastrar()"/>
 			</form>
