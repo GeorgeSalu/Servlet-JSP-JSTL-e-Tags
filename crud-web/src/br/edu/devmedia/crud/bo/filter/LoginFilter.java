@@ -31,15 +31,22 @@ public class LoginFilter implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = ((HttpServletRequest) request);
+		String uri = httpRequest.getRequestURI();
 		
-		if (!httpRequest.getRequestURI().endsWith("login.jsp")) {
+		if (!uri.endsWith("login.jsp") && !uri.endsWith(".css") 
+				&& (httpRequest.getParameter("acao") != null
+				&& !httpRequest.getParameter("acao").equals("login"))) {
 			HttpSession session = httpRequest.getSession();
 			if (session.getAttribute("usuario") == null) {
-				System.out.println("Acesso negado. Logue primeiro.");
+				request.setAttribute("msgErro", "Acesso negado! Você precisar logar primeiro.");
+				request.getRequestDispatcher("login.jsp").forward(request, response);
+			} else {
+				chain.doFilter(request, response);
 			}
+		} else {
+			chain.doFilter(request, response);
 		}
 		
-		chain.doFilter(request, response);
 	}
 
 	/**
@@ -48,5 +55,6 @@ public class LoginFilter implements Filter {
 	public void init(FilterConfig fConfig) throws ServletException {
 		System.out.println("Filtro de Login inicializado: " + new Date());
 	}
+
 
 }
