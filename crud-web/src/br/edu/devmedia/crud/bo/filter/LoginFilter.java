@@ -10,6 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet Filter implementation class LoginFilter
@@ -28,10 +30,15 @@ public class LoginFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		// place your code here
-
-		// pass the request along the filter chain
+		HttpServletRequest httpRequest = ((HttpServletRequest) request);
+		
+		if (!httpRequest.getRequestURI().endsWith("login.jsp")) {
+			HttpSession session = httpRequest.getSession();
+			if (session.getAttribute("usuario") == null) {
+				System.out.println("Acesso negado. Logue primeiro.");
+			}
+		}
+		
 		chain.doFilter(request, response);
 	}
 
