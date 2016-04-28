@@ -26,6 +26,7 @@ public class LoginCommand implements Command {
 		
 		try {
 			if (usuarioBO.validarUsuario(usuarioDTO)) {
+				request.getSession().setAttribute("usuario", usuarioDTO);
 				proximo = "index.jsp";
 			}
 		} catch (NegocioException e) {
@@ -34,6 +35,5 @@ public class LoginCommand implements Command {
 		}
 		return proximo;
 	}
-
 	
 }

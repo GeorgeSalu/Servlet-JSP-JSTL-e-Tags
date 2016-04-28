@@ -19,6 +19,8 @@ import javax.servlet.http.HttpSession;
 @WebFilter("/*")
 public class LoginFilter implements Filter {
 
+	private static final String[] URLS_TO_EXCLUDE = {".css", ".js", ".png", ".jpg", ".gif", "login.jsp"};
+
 	/**
 	 * @see Filter#destroy()
 	 */
@@ -33,9 +35,7 @@ public class LoginFilter implements Filter {
 		HttpServletRequest httpRequest = ((HttpServletRequest) request);
 		String uri = httpRequest.getRequestURI();
 		
-		if (!uri.endsWith("login.jsp") && !uri.endsWith(".css") 
-				&& (httpRequest.getParameter("acao") != null
-				&& !httpRequest.getParameter("acao").equals("login"))) {
+		if (!isURIToExclusao(uri, httpRequest)) {
 			HttpSession session = httpRequest.getSession();
 			if (session.getAttribute("usuario") == null) {
 				request.setAttribute("msgErro", "Acesso negado! Você precisar logar primeiro.");
@@ -54,6 +54,22 @@ public class LoginFilter implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		System.out.println("Filtro de Login inicializado: " + new Date());
+	}
+
+	private boolean isURIToExclusao(String uri, HttpServletRequest httpRequest) {
+		boolean retorno = false;
+		for (String url : URLS_TO_EXCLUDE) {
+			if (uri != null && uri.endsWith(url)) {
+				retorno = true;
+			}
+			
+			if (uri != null && uri.endsWith("main")
+					&& (httpRequest.getParameter("acao") != null
+					&& httpRequest.getParameter("acao").equals("login"))) {
+				retorno = true;
+			}
+		}
+		return retorno;
 	}
 
 
