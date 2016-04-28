@@ -92,32 +92,6 @@
 										</c:choose>
 									</c:forEach>
 								</c:if>
-								<%
-									List<PreferenciaMusicalDTO> preferencias = (List<PreferenciaMusicalDTO>) session.getAttribute("listaPreferencias");
-									PessoaDTO pessoaDTO = (PessoaDTO) request.getAttribute("pessoa");
-									String[] paramPrefs = request.getParameterValues("gostos");
-									List<Integer> idsPrefs = new ArrayList<Integer>();
-									if (pessoaDTO != null && pessoaDTO.getPreferencias() != null)
-										for (PreferenciaMusicalDTO p : pessoaDTO.getPreferencias()) {
-											idsPrefs.add(p.getIdPreferencia());
-										}
-									if (preferencias != null) {
-										for (PreferenciaMusicalDTO preferencia : preferencias) {
-								%>
-									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>"
-										<%
-											if (pessoaDTO != null) {
-												out.print(idsPrefs.contains(preferencia.getIdPreferencia()) ? "checked" : "");
-											} else {
-												out.print(paramPrefs != null && Arrays.asList(paramPrefs).contains(String.valueOf(preferencia.getIdPreferencia())) ? "checked" : "");
-											}
-										%>
-									<%= preferencia.getDescricao() %>
-									/>
-								<%
-										}
-									}
-								%>
 							</td>
 						</tr>
 						<tr>
@@ -137,48 +111,44 @@
 								<td>
 									<select name="uf" id="uf" onchange="popularComboCidades(this)">
 										<option value="0">Selecione...</option>
-									<%
-										List<UfDTO> listaUF = (List<UfDTO>) session.getAttribute("listaUF");
-										UfDTO ufDTO = null;
-										if (pessoaDTO != null) 
-											ufDTO = pessoaDTO.getEndereco().getCidade().getUf();
-										for (UfDTO uf : listaUF) {
-									%>
-										<option value="<%=uf.getIdUF()%>"
-											<% if (ufDTO != null) { %> 
-											<%= ufDTO != null && uf.getIdUF().equals(ufDTO.getIdUF()) ? "selected='selected'" : "" %>>
-											<% } else { %>
-											<%= request.getParameter("uf") != null && String.valueOf(uf.getIdUF()).equals(request.getParameter("uf")) ? "selected='selected'" : "" %>>
-											<% } %>
-											<%=uf.getDescricao()%></option>
-									<%
-										}
-									%>
+										
+										<c:forEach items="${sessionScope.listaUF}" var="ufAux">
+											<c:choose>
+												<c:when test="${pessoa != null}">
+													<option value="${ufAux.idUF}"
+														${(pessoa.endereco.cidade.uf.idUF eq ufAux.idUF) ? 'selected=true' : ''}>${ufAux.descricao}</option>
+												</c:when>
+												<c:otherwise>
+													<option value="${ufAux.idUF}"
+														${(param.uf != null and param.uf eq ufAux.idUF) ? 'selected=true' : ''}>${ufAux.descricao}</option>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
 									</select>
 								</td>
 							</tr>
 							<tr>
 								<td>Cidade*:</td>
 								<td>
-									<select name="cidade">
-										<option value="0">Selecione...</option>
-									<%
-										List<CidadeDTO> listaCidades = (List<CidadeDTO>) request.getAttribute("listaCidades");
-										CidadeDTO cidadeDTO = null;
-										if (pessoaDTO != null)
-											cidadeDTO = pessoaDTO.getEndereco().getCidade();
-										if (listaCidades != null) {
-											for (CidadeDTO cidade : listaCidades) {
-									%>
-										<option value="<%= cidade.getIdCidade() %>"
-											<%= cidadeDTO != null && cidade.getIdCidade().equals(cidadeDTO.getIdCidade()) ? "selected='selected'" : "" %>>
-											<%= cidade.getDescricao() %>
-										</option>
-									<%
-											}
-										}
-									%>
-									</select>
+<!-- 									<select name="cidade"> -->
+<!-- 										<option value="0">Selecione...</option> -->
+<%-- 									<% --%>
+// 										List<CidadeDTO> listaCidades = (List<CidadeDTO>) request.getAttribute("listaCidades");
+// 										CidadeDTO cidadeDTO = null;
+// 										if (pessoaDTO != null)
+// 											cidadeDTO = pessoaDTO.getEndereco().getCidade();
+// 										if (listaCidades != null) {
+// 											for (CidadeDTO cidade : listaCidades) {
+<%-- 									%> --%>
+<%-- 										<option value="<%= cidade.getIdCidade() %>" --%>
+<%-- 											<%= cidadeDTO != null && cidade.getIdCidade().equals(cidadeDTO.getIdCidade()) ? "selected='selected'" : "" %>> --%>
+<%-- 											<%= cidade.getDescricao() %> --%>
+<!-- 										</option> -->
+<%-- 									<% --%>
+// 											}
+// 										}
+<%-- 									%> --%>
+<!-- 									</select> -->
 								</td>
 							</tr>
 							<tr>
