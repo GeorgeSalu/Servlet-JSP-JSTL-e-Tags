@@ -1,8 +1,6 @@
-<%@page import="br.edu.devmedia.crud.dto.PreferenciaMusicalDTO"%>
-<%@page import="br.edu.devmedia.crud.dto.PessoaDTO"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,7 +9,6 @@
 <link rel="stylesheet" href="css/global.css"/>
 </head>
 <body>
-
 	<jsp:include page="cabecalho.jsp"/>
 	
 	<div class="main">
@@ -37,44 +34,36 @@
 						</tr>
 					</thead>
 					<tbody>
-					<%
-						List<PessoaDTO> listaPessoas = (List<PessoaDTO>) request.getAttribute("listaPessoas");
-						for (PessoaDTO pessoa : listaPessoas) {
-					%>
-						<tr>
-							<td class="alignCenter"><%= pessoa.getIdPessoa() %></td>
-							<td class="alignLeft"><%= pessoa.getNome() %></td>
-							<td class="alignCenter"><%= pessoa.getSexo() %></td>
-							<td class="alignCenter"><%= pessoa.getCpf() %></td>
-							<td class="alignCenter"><%= pessoa.getDtNasc() %></td>
-							<td class="alignLeft"><%= pessoa.getEndereco().getLogradouro() %></td>
-							<td class="alignLeft"><%= pessoa.getEndereco().getCidade().getDescricao() %></td>
-							<td class="alignLeft"><%= pessoa.getEndereco().getCidade().getUf().getDescricao() %></td>
-							<td class="alignCenter">
-								<%
-									String preferencias = "";
-									for (PreferenciaMusicalDTO preferencia : pessoa.getPreferencias()) {
-										preferencias += "[" + preferencia.getDescricao() + "] ";
-									}
-								%>
-								<a href="javascript:void(0)" title="Preferências" onclick="alert('<%=preferencias%>');">
-									<img alt="Preferências" src="img/preference.png"/>
-								</a>
-							</td>
-							<td class="alignCenter">
-								<a href="main?acao=editarPessoa&id_pessoa=<%= pessoa.getIdPessoa() %>" title="Editar">
-									<img alt="Edição de Pessoa" src="img/edit.png"/>
-								</a>
-							</td>
-							<td class="alignCenter">
-								<a href="main?acao=removerPessoa&id_pessoa=<%= pessoa.getIdPessoa() %>" title="Deletar">
-									<img alt="Remoção de Pessoa" src="img/delete.png"/>
-								</a>
-							</td>
-						</tr>
-					<%
-						}
-					%>
+						<c:forEach items="${listaPessoas}" var="pessoa">
+							<tr>
+								<td class="alignCenter">${pessoa.idPessoa}</td>
+								<td class="alignLeft">${pessoa.nome}</td>
+								<td class="alignCenter">${pessoa.sexo}</td>
+								<td class="alignCenter">${pessoa.cpf}</td>
+								<td class="alignCenter">${pessoa.dtNasc}</td>
+								<td class="alignLeft">${pessoa.endereco.logradouro}</td>
+								<td class="alignLeft">${pessoa.endereco.cidade.descricao}</td>
+								<td class="alignLeft">${pessoa.endereco.cidade.uf.descricao}</td>
+								<td class="alignCenter">
+									<c:forEach items="${pessoa.preferencias}" var="p" varStatus="status">
+										<c:set var="preferencias" value="${status.first ? ' ' : preferencias} [${p.descricao}]" />
+									</c:forEach>
+									<a href="javascript:void(0)" title="Preferências" onclick="alert('${preferencias}');">
+										<img alt="Preferências" src="img/preference.png"/>
+									</a>
+								</td>
+								<td class="alignCenter">
+									<a href="main?acao=editarPessoa&id_pessoa=${pessoa.idPessoa}" title="Editar">
+										<img alt="Edição de Pessoa" src="img/edit.png"/>
+									</a>
+								</td>
+								<td class="alignCenter">
+									<a href="main?acao=removerPessoa&id_pessoa=${pessoa.idPessoa}" title="Deletar">
+										<img alt="Remoção de Pessoa" src="img/delete.png"/>
+									</a>
+								</td>
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 			</fieldset>

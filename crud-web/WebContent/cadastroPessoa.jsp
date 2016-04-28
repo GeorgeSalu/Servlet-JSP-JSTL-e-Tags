@@ -5,6 +5,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -52,13 +53,18 @@
 						</tr>
 						<tr>
 							<td>Sexo*:</td>
-							<td><input type="radio" name="sexo" value="M" <%= "M".equals(request.getParameter("sexo")) ? "checked" : "" %>/> Masculino
-							<input type="radio" name="sexo" value="F" <%= "F".equals(request.getParameter("sexo")) ? "checked" : "" %>/> Feminino</td>
+							<td><input type="radio" name="sexo" value="M" ${param.sexo eq 'M' ? 'checked' : ''} /> Masculino
+							<input type="radio" name="sexo" value="F" ${param.sexo eq 'F' ? 'checked' : ''} /> Feminino</td>
 						</tr>
 						<tr>
 							<td>Preferências:</td>
 							<td>
-								<%
+							<c:if test="${sessionScope.listaPreferencias != null}">
+								<c:forEach items="${sessionScope.listaPreferencias}" var="preferencia">
+
+								</c:forEach>
+							</c:if> 
+							<%
 									List<PreferenciaMusicalDTO> preferencias = (List<PreferenciaMusicalDTO>) session.getAttribute("listaPreferencias");
 									String[] paramPrefs = request.getParameterValues("gostos");
 									if (preferencias != null) {
