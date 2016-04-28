@@ -1,8 +1,3 @@
-<%@page import="java.util.Arrays"%>
-<%@page import="br.edu.devmedia.crud.dto.PreferenciaMusicalDTO"%>
-<%@page import="br.edu.devmedia.crud.dto.UfDTO"%>
-<%@page import="br.edu.devmedia.crud.dto.CidadeDTO"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -59,23 +54,25 @@
 						<tr>
 							<td>Preferências:</td>
 							<td>
-							<c:if test="${sessionScope.listaPreferencias != null}">
-								<c:forEach items="${sessionScope.listaPreferencias}" var="preferencia">
-									<c:set var="isPrefValid" value="${false}"/>
-									<c:forEach items="${paramValues['gostos']}" var="gosto">
-										<c:if test="${preferencia.idPreferencia eq gosto}">
-											<c:set var="isPrefValid" value="${true}"/>
-										</c:if>
+								<c:if test="${sessionScope.listaPreferencias != null}">
+									<c:forEach items="${sessionScope.listaPreferencias}" var="preferencia">
+										<c:set var="isPrefValid" value="${false}"/>
+										<c:forEach items="${paramValues['gostos']}" var="gosto">
+											<c:if test="${preferencia.idPreferencia eq gosto}">
+												<c:set var="isPrefValid" value="${true}"/>
+											</c:if>
+										</c:forEach>
+										
+										<c:choose>
+											<c:when test="${isPrefValid}">
+												<input type="checkbox" name="gostos" value="${preferencia.idPreferencia}" checked="checked"/> ${preferencia.descricao}
+											</c:when>
+											<c:otherwise>
+												<input type="checkbox" name="gostos" value="${preferencia.idPreferencia}" /> ${preferencia.descricao}
+											</c:otherwise>
+										</c:choose>
 									</c:forEach>
-									
-									<c:if test="${isPrefValid}">
-										<input type="checkbox" name="gostos" value="${preferencia.idPreferencia}" checked="checked"/> ${preferencia.descricao}
-									</c:if>
-									<c:if test="${!isPrefValid}">
-										<input type="checkbox" name="gostos" value="${preferencia.idPreferencia}" /> ${preferencia.descricao}
-									</c:if>
-								</c:forEach>
-							</c:if>
+								</c:if>
 							</td>
 						</tr>
 						<tr>
@@ -95,16 +92,11 @@
 								<td>
 									<select name="uf" id="uf" onchange="popularComboCidades(this)">
 										<option value="0">Selecione...</option>
-									<%
-										List<UfDTO> listaUF = (List<UfDTO>) session.getAttribute("listaUF");
-										for (UfDTO uf : listaUF) {
-									%>
-										<option value="<%=uf.getIdUF()%>" 
-											<%= request.getParameter("uf") != null && String.valueOf(uf.getIdUF()).equals(request.getParameter("uf")) ? "selected='selected'" : "" %>>
-												<%=uf.getDescricao()%></option>
-									<%
-										}
-									%>
+										
+										<c:forEach items="${sessionScope.listaUF}" var="ufAux">
+											<option value="${ufAux.idUF}"
+												${(param.uf != null and param.uf eq ufAux.idUF) ? 'selected=true' : ''}>${ufAux.descricao}</option>
+										</c:forEach>
 									</select>
 								</td>
 							</tr>
@@ -113,19 +105,13 @@
 								<td>
 									<select name="cidade">
 										<option value="0">Selecione...</option>
-									<%
-										List<CidadeDTO> listaCidades = (List<CidadeDTO>) request.getAttribute("listaCidades");
-										if (listaCidades != null) {
-											for (CidadeDTO cidade : listaCidades) {
-									%>
-										<option value="<%= cidade.getIdCidade() %>"
-											<%= request.getParameter("cidade") != null && String.valueOf(cidade.getIdCidade()).equals(request.getParameter("cidade")) ? "selected='selected'" : "" %>>
-											<%= cidade.getDescricao() %>
-										</option>
-									<%
-											}
-										}
-									%>
+										<c:if test="${listaCidades != null}">
+											<c:forEach items="${listaCidades}" var="cidade">
+												<option value="${cidade.idCidade}"
+													${(param.cidade != null and param.cidade eq cidade.idCidade) ? 'selected=true' : ''}>${cidade.descricao}
+												</option>
+											</c:forEach>
+										</c:if>
 									</select>
 								</td>
 							</tr>

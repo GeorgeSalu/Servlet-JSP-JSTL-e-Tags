@@ -7,6 +7,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -61,6 +62,36 @@
 						<tr>
 							<td>Preferências:</td>
 							<td>
+								<c:if test="${sessionScope.listaPreferencias != null}">
+									<c:forEach items="${sessionScope.listaPreferencias}" var="preferencia">
+										<c:set var="isPrefValid" value="${false}"/>
+										<c:choose>
+											<c:when test="${pessoa != null}">
+												<c:forEach items="${pessoa.preferencias}" var="prefAux">
+													<c:if test="${preferencia.idPreferencia eq prefAux.idPreferencia}">
+														<c:set var="isPrefValid" value="${true}"/>
+													</c:if>
+												</c:forEach>
+											</c:when>
+											<c:otherwise>
+												<c:forEach items="${paramValues['gostos']}" var="gosto">
+													<c:if test="${preferencia.idPreferencia eq gosto}">
+														<c:set var="isPrefValid" value="${true}"/>
+													</c:if>
+												</c:forEach>
+											</c:otherwise>
+										</c:choose>
+										
+										<c:choose>
+											<c:when test="${isPrefValid}">
+												<input type="checkbox" name="gostos" value="${preferencia.idPreferencia}" checked="checked"/> ${preferencia.descricao}
+											</c:when>
+											<c:otherwise>
+												<input type="checkbox" name="gostos" value="${preferencia.idPreferencia}" /> ${preferencia.descricao}
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+								</c:if>
 								<%
 									List<PreferenciaMusicalDTO> preferencias = (List<PreferenciaMusicalDTO>) session.getAttribute("listaPreferencias");
 									PessoaDTO pessoaDTO = (PessoaDTO) request.getAttribute("pessoa");
