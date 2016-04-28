@@ -1,10 +1,3 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="br.edu.devmedia.crud.dto.PessoaDTO"%>
-<%@page import="java.util.Arrays"%>
-<%@page import="br.edu.devmedia.crud.dto.PreferenciaMusicalDTO"%>
-<%@page import="br.edu.devmedia.crud.dto.UfDTO"%>
-<%@page import="br.edu.devmedia.crud.dto.CidadeDTO"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -130,25 +123,24 @@
 							<tr>
 								<td>Cidade*:</td>
 								<td>
-<!-- 									<select name="cidade"> -->
-<!-- 										<option value="0">Selecione...</option> -->
-<%-- 									<% --%>
-// 										List<CidadeDTO> listaCidades = (List<CidadeDTO>) request.getAttribute("listaCidades");
-// 										CidadeDTO cidadeDTO = null;
-// 										if (pessoaDTO != null)
-// 											cidadeDTO = pessoaDTO.getEndereco().getCidade();
-// 										if (listaCidades != null) {
-// 											for (CidadeDTO cidade : listaCidades) {
-<%-- 									%> --%>
-<%-- 										<option value="<%= cidade.getIdCidade() %>" --%>
-<%-- 											<%= cidadeDTO != null && cidade.getIdCidade().equals(cidadeDTO.getIdCidade()) ? "selected='selected'" : "" %>> --%>
-<%-- 											<%= cidade.getDescricao() %> --%>
-<!-- 										</option> -->
-<%-- 									<% --%>
-// 											}
-// 										}
-<%-- 									%> --%>
-<!-- 									</select> -->
+									<select name="cidade">
+										<option value="0">Selecione...</option>
+										
+										<c:if test="${listaCidades ne null}">
+											<c:forEach items="${listaCidades}" var="cidadeAux">
+												<c:choose>
+													<c:when test="${pessoa != null}">
+														<option value="${cidadeAux.idCidade}"
+															${(pessoa.endereco.cidade.idCidade eq cidadeAux.idCidade) ? 'selected=true' : ''}>${cidadeAux.descricao}</option>
+													</c:when>
+													<c:otherwise>
+														<option value="${cidadeAux.idCidade}"
+															${(param.cidade != null and param.cidade eq cidadeAux.idCidade) ? 'selected=true' : ''}>${cidadeAux.descricao}</option>
+													</c:otherwise>
+												</c:choose>
+											</c:forEach>
+										</c:if>
+ 									</select>
 								</td>
 							</tr>
 							<tr>
