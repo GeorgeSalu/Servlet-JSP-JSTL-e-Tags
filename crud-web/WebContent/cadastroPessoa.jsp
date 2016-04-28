@@ -61,22 +61,21 @@
 							<td>
 							<c:if test="${sessionScope.listaPreferencias != null}">
 								<c:forEach items="${sessionScope.listaPreferencias}" var="preferencia">
-
+									<c:set var="isPrefValid" value="${false}"/>
+									<c:forEach items="${paramValues['gostos']}" var="gosto">
+										<c:if test="${preferencia.idPreferencia eq gosto}">
+											<c:set var="isPrefValid" value="${true}"/>
+										</c:if>
+									</c:forEach>
+									
+									<c:if test="${isPrefValid}">
+										<input type="checkbox" name="gostos" value="${preferencia.idPreferencia}" checked="checked"/> ${preferencia.descricao}
+									</c:if>
+									<c:if test="${!isPrefValid}">
+										<input type="checkbox" name="gostos" value="${preferencia.idPreferencia}" /> ${preferencia.descricao}
+									</c:if>
 								</c:forEach>
-							</c:if> 
-							<%
-									List<PreferenciaMusicalDTO> preferencias = (List<PreferenciaMusicalDTO>) session.getAttribute("listaPreferencias");
-									String[] paramPrefs = request.getParameterValues("gostos");
-									if (preferencias != null) {
-										for (PreferenciaMusicalDTO preferencia : preferencias) {
-								%>
-									<input type="checkbox" name="gostos" value="<%= preferencia.getIdPreferencia() %>" 
-										<%= paramPrefs != null && Arrays.asList(paramPrefs).contains(String.valueOf(preferencia.getIdPreferencia())) ? "checked" : "" %>/>
-									<%= preferencia.getDescricao() %>
-								<%
-										}
-									}
-								%>
+							</c:if>
 							</td>
 						</tr>
 						<tr>
